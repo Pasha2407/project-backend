@@ -1,21 +1,11 @@
-const register = require('./register')
-const login = require('./login')
-const logout = require('./logout')
 const current = require('./current')
-const updateSubscription = require('./updateSubscription')
+const updateUser = require('./updateUser')
+const sendSubscribe = require('./sendSubscribe')
 const updateAvatar = require('./updateAvatar')
-const getAvatar = require('./getAvatar')
-const verifyEmail = require('./verifyEmail')
-const reVerification = require('./reVerification')
 
 module.exports = {
-    register,
-    login,
-    logout,
     current,
-    updateSubscription,
+    updateUser,
+    sendSubscribe,
     updateAvatar,
-    getAvatar,
-    verifyEmail,
-    reVerification,
 }

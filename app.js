@@ -9,13 +9,15 @@ app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
 
-const contactsRouter = require('./routes/api/contacts')
+const authRouter = require('./routes/api/auth')
 const usersRouter = require('./routes/api/users')
+const drinksRouter = require('./routes/api/drinks')
+const filtersRouter = require('./routes/api/filters')
 
-const validateToken = require('./middlewares/validateToken')
-
-app.use('/api/contacts', validateToken, contactsRouter)
+app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/drinks', drinksRouter)
+app.use('/api/filters', filtersRouter)
 
 app.use('/avatars', express.static('public/avatars'))
 

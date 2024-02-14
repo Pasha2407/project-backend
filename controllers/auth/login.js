@@ -17,20 +17,15 @@ async function login(req, res) {
         throw newError(401, 'Email or password is wrong')
     }
 
-    if (user.verify === false) {
-        throw newError(403, 'No verification')
-    }
-
     const token = jwt.sign(
         { id: user._id, name: user.name },
         process.env.JWT_SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: '24h' }
     )
 
-    const result = await userModel.findByIdAndUpdate(user._id, { token })
+    await userModel.findByIdAndUpdate(user._id, { token })
 
-    const { subscription } = result
-    const userResponse = { email, subscription }
+    const userResponse = { email }
 
     res.status(200).send({ token, user: userResponse })
 }

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const { userModel } = require('../models/users')
 const newError = require('../helpers/newError')
 
-function auth(req, res, next) {
+function validateToken(req, res, next) {
     const authHeader = req.headers.authorization
     if (typeof authHeader === 'undefined') {
         return next(newError(401))
@@ -29,11 +29,10 @@ function auth(req, res, next) {
         req.user = {
             id: decode.id,
             email: user.email,
-            subscription: user.subscription,
         }
 
         next()
     })
 }
 
-module.exports = auth
+module.exports = validateToken
