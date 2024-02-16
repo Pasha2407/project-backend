@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const wrapper = require("../../helpers/wrapper");
-const method = require("../../controllers/drinks/index");
-const validateToken = require("../../middlewares/validateToken");
+const method = require("../../controllers/drinks");
+const { validateToken } = require("../../middlewares");
 
 router.get("/mainpage", validateToken, wrapper(method.getMainPage));
 

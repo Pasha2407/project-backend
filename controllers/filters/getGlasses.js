@@ -1,7 +1,8 @@
+const recipeModel = require("../../models/schemas/recipe");
+
 async function getGlasses(req, res) {
-    res.status(200).send({
-        message: 'route <getGlasses> works'
-    })
+  const result = await recipeModel.distinct("glass");
+  res.json(result);
 }
 
-module.exports = getGlasses
+module.exports = getGlasses;

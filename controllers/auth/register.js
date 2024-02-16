@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 
 const userModel = require("../../models/schemas/user");
-const newError = require("../../helpers/newError");
+const { newError } = require("../../helpers");
 
 async function register(req, res) {
   const { name, dateOfBirth, email, password } = req.body;

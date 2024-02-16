@@ -1,19 +1,21 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const validateToken = require('../../middlewares/validateToken')
+const { validateToken, validateSchema } = require("../../middlewares");
+const { registerJoiSchema } = require("../../models/joiSchemas/auth");
+const { loginJoiSchema } = require("../../models/joiSchemas/auth");
 
-const validateSchema = require('../../middlewares/validateSchema')
-const { registerJoiSchema } = require('../../models/joiSchemas/auth')
-const { loginJoiSchema } = require('../../models/joiSchemas/auth')
+const { wrapper } = require("../../helpers");
+const method = require("../../controllers/auth/index");
 
-const wrapper = require('../../helpers/wrapper')
-const method = require('../../controllers/auth/index')
+router.post(
+  "/signup",
+  validateSchema(registerJoiSchema),
+  wrapper(method.register)
+);
 
-router.post('/signup', validateSchema(registerJoiSchema), wrapper(method.register))
+router.post("/signin", validateSchema(loginJoiSchema), wrapper(method.login));
 
-router.post('/signin', validateSchema(loginJoiSchema), wrapper(method.login))
+router.post("/signout", validateToken, wrapper(method.logout));
 
-router.post('/signout', validateToken, wrapper(method.logout))
-
-module.exports = router
+module.exports = router;
