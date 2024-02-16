@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 
-const { userModel } = require('../../models/users')
+const userModel = require('../../models/schemas/user')
 const newError = require('../../helpers/newError')
 
 async function login(req, res) {
@@ -18,16 +18,16 @@ async function login(req, res) {
     }
 
     const token = jwt.sign(
-        { id: user._id, name: user.name },
+        { id: user._id, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: '24h' }
     )
 
     await userModel.findByIdAndUpdate(user._id, { token })
 
-    const userResponse = { email }
+    const userResponse = { name: user.name, avatarURL: user.avatarURL }
 
-    res.status(200).send({ token, user: userResponse })
+    res.status(200).send({ user: userResponse, token })
 }
 
 module.exports = login

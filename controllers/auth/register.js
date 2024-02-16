@@ -1,24 +1,33 @@
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const gravatar = require('gravatar')
 
-const { userModel } = require('../../models/users')
+const userModel = require('../../models/schemas/user')
 const newError = require('../../helpers/newError')
 
 async function register(req, res) {
-    const { email, password } = req.body
+    const { name, dateOfBirth, email, password } = req.body
     const avatarURL = gravatar.url(email, { s: '200', r: 'pg', d: 'mm' })
 
-    const user = await userModel.findOne({ email })
+    let user = await userModel.findOne({ email })
     if (user !== null) {
         throw newError(409)
     }
     const passwordHash = await bcrypt.hash(password, 8)
 
-    await userModel.create({ email, password: passwordHash, avatarURL })
+    user = await userModel.create({ name, dateOfBirth, email, password: passwordHash, avatarURL })
 
-    const userResponse = { email }
+    const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' }
+    )
+    user.token = token
+    await user.save()
 
-    res.status(201).send({ user: userResponse })
+    const userResponse = { name, avatarURL }
+
+    res.status(201).send({ user: userResponse, token })
 }
 
 module.exports = register

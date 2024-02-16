@@ -1,4 +1,4 @@
-const { userModel } = require('../../models/users')
+const userModel = require('../../models/schemas/user')
 
 async function logout(req, res) {
     await userModel.findByIdAndUpdate(req.user.id, { token: null })

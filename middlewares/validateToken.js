@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { userModel } = require('../models/users')
+const userModel = require('../models/schemas/user')
 const newError = require('../helpers/newError')
 
 function validateToken(req, res, next) {
