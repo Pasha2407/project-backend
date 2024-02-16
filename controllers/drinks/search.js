@@ -1,7 +1,33 @@
+const recipeModel = require("../../models/schemas/recipe");
+const userModel = require("../../models/schemas/user");
+
 async function search(req, res) {
-    res.status(200).send({
-        message: 'route <search> works'
-    })
+  const { drink, category, ingredients, page = 1, limit = 9 } = req.query;
+  const skip = (page - 1) * limit;
+
+  const { adult } = await userModel.findById(req.user.id);
+  const filter = {};
+
+  if (!adult) {
+    filter.alcoholic = "Non alcoholic";
+  }
+
+  if (drink) {
+    filter.drink = { $regex: new RegExp(drink, "i") };
+  }
+
+  if (category) {
+    filter.category = category;
+  }
+
+  if (ingredients) {
+    const ingredientsArray = ingredients.split(",");
+    filter["ingredients.title"] = { $in: ingredientsArray };
+  }
+
+  const result = await recipeModel.find(filter);
+
+  res.json(result.splice(skip, limit));
 }
 
-module.exports = search
+module.exports = search;
