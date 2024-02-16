@@ -1,7 +1,9 @@
 async function current(req, res) {
-    res.status(200).send({
-        message: 'route <current user> works'
-    })
+  const { email, id } = req.user;
+  res.json({
+    email: email,
+    id: id,
+  });
 }
 
-module.exports = current
+module.exports = current;

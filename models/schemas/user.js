@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema(
     adult: {
       type: Boolean,
     },
+    subscribed: {
+      type: Boolean,
+    },
   },
   { versionKey: false }
 );

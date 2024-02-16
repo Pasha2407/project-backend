@@ -1,8 +1,26 @@
-// const { userModel } = require('../../models/users')
-// const newError = require('../../helpers/newError')
+const userModel = require("../../models/schemas/user");
+const { newError, sendMail } = require("../../helpers");
 
 async function sendSubscribe(req, res) {
-    res.status(200).json({ message: 'route <sendSubscribe> works' })
+  const { email, name, id } = await userModel.findById(req.user.id);
+
+  if (email !== req.body.email) {
+    throw newError(403, "Enter own email");
+  }
+
+  const subscribedEmail = {
+    to: email,
+    subject: "Thank you for your subscription",
+    html: `Dear ${name}, you have successfully subscribed to updates from Drink Master!`,
+  };
+
+  await sendMail(subscribedEmail);
+  await userModel.findByIdAndUpdate(id, { subscribed: true });
+
+  res.json({
+    email: email,
+    subscribed: true,
+  });
 }
 
-module.exports = sendSubscribe
+module.exports = sendSubscribe;

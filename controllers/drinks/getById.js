@@ -1,6 +1,6 @@
 const recipeModel = require("../../models/schemas/recipe");
 const userModel = require("../../models/schemas/user");
-const newError = require("../../helpers/newError");
+const { newError } = require("../../helpers");
 
 async function getById(req, res) {
   const { id } = req.params;

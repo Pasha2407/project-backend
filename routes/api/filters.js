@@ -1,13 +1,13 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const wrapper = require('../../helpers/wrapper')
-const method = require('../../controllers/filters/index')
+const { wrapper } = require("../../helpers");
+const method = require("../../controllers/filters");
 
-router.get('/categories', wrapper(method.getCategories))
+router.get("/categories", wrapper(method.getCategories));
 
-router.get('/ingredients', wrapper(method.getIngredients))
+router.get("/ingredients", wrapper(method.getIngredients));
 
-router.get('/glasses', wrapper(method.getGlasses))
+router.get("/glasses", wrapper(method.getGlasses));
 
-module.exports = router
+module.exports = router;

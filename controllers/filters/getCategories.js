@@ -1,7 +1,8 @@
+const recipeModel = require("../../models/schemas/recipe");
+
 async function getCategories(req, res) {
-    res.status(200).send({
-        message: 'route <getCategories> works'
-    })
+  const result = await recipeModel.distinct("category");
+  res.json(result);
 }
 
-module.exports = getCategories
+module.exports = getCategories;
