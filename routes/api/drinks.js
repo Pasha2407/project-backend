@@ -11,18 +11,22 @@ router.get("/popular", validateToken, wrapper(method.getPopular));
 
 router.get("/search", validateToken, wrapper(method.search));
 
-router.get("/:id", validateToken, wrapper(method.getById));
-
 router.post("/own/add", wrapper(method.addMy));
 
 router.delete("/own/remove/:id", wrapper(method.removeMy));
 
 router.get("/own", wrapper(method.getMy));
 
-router.post("/favorite/add", wrapper(method.addFavorite));
+router.post("/favorite/add", validateToken, wrapper(method.addFavorite));
 
-router.delete("/favorite/remove/:id", wrapper(method.removeFavorite));
+router.delete(
+  "/favorite/remove",
+  validateToken,
+  wrapper(method.removeFavorite)
+);
 
-router.get("/favorite", wrapper(method.getFavorite));
+router.get("/favorite", validateToken, wrapper(method.getFavorite));
+
+router.get("/:id", validateToken, wrapper(method.getById));
 
 module.exports = router;
