@@ -1,7 +1,7 @@
-const recipeModel = require("../../models/schemas/recipe");
+const ingredientModel = require("../../models/schemas/ingredient");
 
 async function getIngredients(req, res) {
-  const result = await recipeModel.distinct("ingredients.title");
+  const result = await ingredientModel.distinct("title");
   res.json(result);
 }
 

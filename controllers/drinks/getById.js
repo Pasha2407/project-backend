@@ -1,4 +1,5 @@
 const recipeModel = require("../../models/schemas/recipe");
+const ingredientModel = require("../../models/schemas/ingredient");
 const userModel = require("../../models/schemas/user");
 const { newError } = require("../../helpers");
 
@@ -8,11 +9,26 @@ async function getById(req, res) {
   if (!adult) {
     throw newError(403, "Not Allowed");
   }
-  const result = await recipeModel.findById(id);
-  if (!result) {
+  const recipe = await recipeModel.findById(id);
+
+  if (!recipe) {
     throw newError(404, "Not found");
   }
-  res.json(result);
+
+  const ingredients = [];
+  for (const ingredientData of recipe.ingredients) {
+    const ingredient = await ingredientModel.findById(
+      ingredientData.ingredientId
+    );
+
+    if (ingredient) {
+      ingredients.push(ingredient);
+    }
+  }
+  res.json({
+    recipe,
+    ingredients,
+  });
 }
 
 module.exports = getById;
