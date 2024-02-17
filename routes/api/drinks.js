@@ -4,7 +4,7 @@ const router = express.Router();
 const wrapper = require("../../helpers/wrapper");
 const method = require("../../controllers/drinks");
 
-const { validateSchema } = require('../../middlewares/index')
+const { validateSchema, upload } = require('../../middlewares/index')
 const { addMyJoiSchema } = require('../../models/joiSchemas/drink')
 
 router.get("/mainpage", wrapper(method.getMainPage));
@@ -15,7 +15,7 @@ router.get("/search", wrapper(method.search));
 
 router.get("/:id", wrapper(method.getById));
 
-router.post("/own/add", validateSchema(addMyJoiSchema), wrapper(method.addMy));
+router.post("/own/add", upload.single("avatar"), validateSchema(addMyJoiSchema), wrapper(method.addMy));
 
 router.delete("/own/remove/:id", wrapper(method.removeMy));
 

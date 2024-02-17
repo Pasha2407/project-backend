@@ -1,6 +1,5 @@
-// const cloudinary = require("cloudinary").v2;
-// const fs = require("fs/promises");
-const gravatar = require("gravatar");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs/promises");
 
 const recipeModel = require("../../models/schemas/recipe");
 const userModel = require("../../models/schemas/user");
@@ -10,38 +9,36 @@ async function addMy(req, res) {
     const { drink, shortDescription, category,
         glass, alcoholic, ingredients, instructions } = req.body
 
-    const avatarURL = gravatar.url(drink, { s: "200", r: "pg", d: "mm" });
+    const { path } = req.file;
+    const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
 
-    // const { path } = req.file;
-    // const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
+    cloudinary.config({
+        cloud_name: CLOUD_NAME,
+        api_key: API_KEY,
+        api_secret: API_SECRET,
+    });
 
-    // cloudinary.config({
-    //     cloud_name: CLOUD_NAME,
-    //     api_key: API_KEY,
-    //     api_secret: API_SECRET,
-    // });
+    const uploadImage = async (path) => {
+        const options = {
+            use_filename: true,
+            unique_filename: true,
+            overwrite: true,
+            width: 100,
+            height: 100,
+            crop: "fill",
+            gravity: "faces",
+        };
 
-    // const uploadImage = async (path) => {
-    //     const options = {
-    //         use_filename: true,
-    //         unique_filename: true,
-    //         overwrite: true,
-    //         width: 100,
-    //         height: 100,
-    //         crop: "fill",
-    //         gravity: "faces",
-    //     };
+        try {
+            const result = await cloudinary.uploader.upload(path, options);
+            return result;
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-    //     try {
-    //         const result = await cloudinary.uploader.upload(path, options);
-    //         return result;
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
-    // const uploadedAvatar = await uploadImage(path);
-    // await fs.unlink(path);
+    const uploadedAvatar = await uploadImage(path);
+    await fs.unlink(path);
 
     const { adult } = await userModel.findById(req.user.id);
     let alc = '';
@@ -59,7 +56,7 @@ async function addMy(req, res) {
 
     const newRecipe = {
         drink,
-        drinkThumb: avatarURL,
+        drinkThumb: uploadedAvatar.url,
         shortDescription,
         category,
         glass,
