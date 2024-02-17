@@ -14,10 +14,12 @@ const usersRouter = require('./routes/api/users')
 const drinksRouter = require('./routes/api/drinks')
 const filtersRouter = require('./routes/api/filters')
 
+const { validateToken } = require("./middlewares/index");
+
 app.use('/api/auth', authRouter)
-app.use('/api/users', usersRouter)
-app.use('/api/drinks', drinksRouter)
-app.use('/api/filters', filtersRouter)
+app.use('/api/users', validateToken, usersRouter)
+app.use('/api/drinks', validateToken, drinksRouter)
+app.use('/api/filters', validateToken, filtersRouter)
 
 app.use('/avatars', express.static('public/avatars'))
 
