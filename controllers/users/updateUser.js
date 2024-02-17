@@ -41,18 +41,24 @@ async function updateUser(req, res) {
 
     await fs.unlink(path);
 
-    await userModel.findByIdAndUpdate(id, {
+    const updatedUser = await userModel.findByIdAndUpdate(id, {
       name,
       avatarURL: uploadedAvatar.url,
     });
-  } else {
-    await userModel.findByIdAndUpdate(id, { name });
-  }
 
-  res.json({
-    id: id,
-    name: name,
-  });
+    res.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      avatarURL: updatedUser.avatarURL,
+    });
+  } else {
+    const updatedUser = await userModel.findByIdAndUpdate(id, { name });
+
+    res.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+    });
+  }
 }
 
 module.exports = updateUser;
