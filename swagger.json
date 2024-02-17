@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Drink Master API",
-    "description": "API to interact with drinks and user information and details",
+    "description": "API to interact with drinks and user information and details. \n\n**Функціональні можливості:**\n\nРеєстрація та авторизація користувачів\n\nОновлення даних користувачів\n\nФільтрація даних про коктейлі\n\nОтримання та видалення коктейлів\n\nСтворення власного коктейлю\n\nДодавання коктейлів до обраних\n\n**Стек технологій, що використовується у проекті:**\n\nNode.js - середовище виконання JavaScript на сервері\n\nExpress.js - фреймворк для розробки веб-додатків на Node.js\n\nMongoDB - NoSQL база даних\n\nMongoose - бібліотека для роботи з MongoDB у Node.js",
     "version": "1.0.0"
   },
   "servers": [
@@ -31,12 +31,14 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "User registration",
         "operationId": "AuthController_signup",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n**name** - string, ім'я користувача.\n\n**dateOfBirth** - date, дата народження користувача користувача.\n\n**email** - string, електронна пошта користувача.\n\n**password** - string, зашифрований пароль користувача.",
+          "description": "# Опис параметрів запиту:\n**name** - string, ім'я користувача.\n\n**dateOfBirth** - date, дата народження користувача.\n\n**email** - string, електронна пошта користувача.\n\n**password** - string, пароль користувача.",
           "content": {
             "application/json": {
               "schema": {
@@ -71,12 +73,14 @@
     },
     "/auth/signin": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Sign in existing user",
         "operationId": "AuthController_signin",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**email** - string, електронна пошта користувача. **Обов'язковий параметр**\n\n**password** - string, зашифрований пароль користувача. **Обов'язковий параметр**\n",
+          "description": "# Опис параметрів запиту:\n\n**email** - string, електронна пошта користувача.\n\n**password** - string, пароль користувача.\n",
           "content": {
             "application/json": {
               "schema": {
@@ -111,7 +115,9 @@
     },
     "/auth/signout": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Signs out user",
         "description": "Ендпоінт логауту - це механізм виходу з системи, який припиняє дію сесії користувача та знищує токен доступу, що був виданий при попередній аутентифікації.\n\nОпис: Коли користувач натискає кнопку вийти з системи, він робить запит на URL /auth/signout з валідним токеном у заголовку Authorization. Сервер перевіряє валідність токена, якщо токен є дійсним, то сесія користувача закривається, токен видаляється і користувач повертається на сторінку входу в систему.\n",
         "operationId": "AuthController_signout",
@@ -136,7 +142,9 @@
     },
     "/users/current": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get current user info",
         "description": "Ендпоінт \"current\" використовується для отримання інформації про поточного авторизованого користувача. Цей ендпоінт повертає об'єкт, який містить інформацію про користувача, таку як електронна пошта та ідентифікатор користувача.\n",
         "operationId": "UsersController_LoggedUser",
@@ -164,6 +172,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "security": [
@@ -175,7 +186,9 @@
     },
     "/users/update": {
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Update user info",
         "description": "Ендпоінт \"update\" використовується для оновлення імені та аватара користувача. Можливе оновлення обох значень або тільки одного з двох. Цей ендпоінт повертає об'єкт, який містить інформацію про користувача, таку як нове ім`я та посилання на новий аватар, завантажений на сервер Cloudinary.\n",
         "operationId": "UsersController_patchUpdateUser",
@@ -218,13 +231,15 @@
     },
     "/users/subscribe": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Subscribe for updates",
         "description": "Ендпоінт \"subscribe\" використовується для отримання підтвердження на підписку від користувача шляхом введення пошти, вказаної при реєстрації. У випадку розбіжності пошти у підписці буде відмовлено.\n",
         "operationId": "UsersController_postSubscribeUser",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**email** - string, email, на який користувач хоче оформити підписку. **Обов'язковий параметр**\n",
+          "description": "# Опис параметрів запиту:\n\n**email** - string, email, на який користувач хоче оформити підписку.\n",
           "content": {
             "application/json": {
               "schema": {
@@ -264,7 +279,9 @@
     },
     "/filters/categories": {
       "get": {
-        "tags": ["Filter"],
+        "tags": [
+          "Filter"
+        ],
         "summary": "Drinks categories list",
         "description": "Ендпоінт \"categories\" використовується для отримання списку категорій коктейлів, відсортованих за алфавітом\n",
         "operationId": "FilterController_getCategories",
@@ -296,7 +313,9 @@
     },
     "/filters/ingredients": {
       "get": {
-        "tags": ["Filter"],
+        "tags": [
+          "Filter"
+        ],
         "summary": "Drinks ingredients list",
         "description": "Ендпоінт \"ingredients\" використовується для отримання списку інгредієнтів коктейлів, відсортованих за алфавітом\n",
         "operationId": "FilterController_getIngredients",
@@ -328,7 +347,9 @@
     },
     "/filters/glasses": {
       "get": {
-        "tags": ["Filter"],
+        "tags": [
+          "Filter"
+        ],
         "summary": "Drinks glasses list",
         "description": "Ендпоінт \"glasses\" використовується для отримання списку тари для сервірування напоїв, відсортованих за алфавітом\n",
         "operationId": "FilterController_getGlasses",
@@ -359,9 +380,11 @@
     },
     "/drinks/mainpage": {
       "get": {
-        "tags": ["Drinks"],
+        "tags": [
+          "Drinks"
+        ],
         "summary": "Drinks list for MainPage",
-        "description": "Ендпоінт \"mainpage\" використовується для отримання списку з трьох коктейлів чотирьох зазначених категорій: Ordinary Drink, Cocktail, Shake та Other/Unknown. Коктейлі відсортовані по даті додавання в систему. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
+        "description": "Ендпоінт \"mainpage\" використовується для отримання списку коктейлів з чотирьох зазначених категорій: Ordinary Drink, Cocktail, Shake та Other/Unknown. Коктейлі відсортовані по даті додавання в систему. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
         "operationId": "DrinksController_getMainpage",
         "responses": {
           "200": {
@@ -390,7 +413,9 @@
     },
     "/drinks/popular": {
       "get": {
-        "tags": ["Drinks"],
+        "tags": [
+          "Drinks"
+        ],
         "summary": "Drinks sorted by popularity",
         "description": "Ендпоінт \"popular\" використовується для отримання списку коктейлів, відсортованих на основі кількості додавань до обраного користувачами. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
         "operationId": "DrinksController_getPopular",
@@ -421,7 +446,9 @@
     },
     "/drinks/search": {
       "get": {
-        "tags": ["Drinks"],
+        "tags": [
+          "Drinks"
+        ],
         "summary": "Drinks search",
         "description": "Ендпоінт \"search\" використовується для пошуку коктейлів обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n\n# Опис параметрів запиту:\n\n**drink** - string, назва коктейлю для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
         "operationId": "DrinksController_getSearch",
@@ -429,31 +456,41 @@
           {
             "name": "drink",
             "in": "query",
-            "schema": { "type": "string" },
+            "schema": {
+              "type": "string"
+            },
             "value": ""
           },
           {
             "name": "category",
             "in": "query",
-            "schema": { "type": "string" },
+            "schema": {
+              "type": "string"
+            },
             "value": ""
           },
           {
             "name": "ingredients",
             "in": "query",
-            "schema": { "type": "string" },
+            "schema": {
+              "type": "string"
+            },
             "value": ""
           },
           {
             "name": "page",
             "in": "query",
-            "schema": { "type": "number" },
+            "schema": {
+              "type": "number"
+            },
             "value": "1"
           },
           {
             "name": "limit",
             "in": "query",
-            "schema": { "type": "number" },
+            "schema": {
+              "type": "number"
+            },
             "value": "9"
           }
         ],
@@ -484,16 +521,22 @@
     },
     "/drinks/{id}": {
       "get": {
-        "tags": ["Drinks"],
+        "tags": [
+          "Drinks"
+        ],
         "summary": "Drink Information",
-        "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про коктейль та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n\n# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+        "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про коктейль та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n",
         "operationId": "DrinksController_getDrinkInfo",
         "parameters": [
           {
-            "name": "id",
+            "name": "DrinkId",
             "in": "path",
-            "schema": { "type": "string" },
-            "value": "639b6de9ff77d221f190c50d"
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -521,15 +564,131 @@
         ]
       }
     },
+    "/drinks/own/add/": {
+      "post": {
+        "tags": [
+          "Drinks"
+        ],
+        "summary": "Adding my drink",
+        "description": "Ендпоінт \"own/add\" використовується для додавання власного коктейлю. Цей ендпоінт повертає об'єкт, який містить інформацію про коктейль, таку як загальна інформація та посилання на новий аватар, завантажений на сервер Cloudinary.\n",
+        "operationId": "DrinksController_postMyDrink",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n **drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів.\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MyDrinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Drink returned\n\nОб`єкт з даними про коктейль\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyDrinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/own/remove/{id}": {
+      "delete": {
+        "tags": [
+          "Drinks"
+        ],
+        "summary": "Removing my drink",
+        "description": "Ендпоінт \"own/remove\" використовується для видалення власного коктейлю по ід\n",
+        "operationId": "DrinksController_deleteMyDrink",
+        "parameters": [
+          {
+            "name": "DrinkId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful removal drink"
+          },
+          "404": {
+            "description": "Drink not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/own/": {
+      "get": {
+        "tags": [
+          "Drinks"
+        ],
+        "summary": "My Drinks",
+        "description": "Ендпоінт \"own\" використовується для відображення списку власних коктейлів\n",
+        "operationId": "DrinksController_getMyDrinks",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Drinks returned\n\nОб`єкт з даними про власні коктейлі\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyDrinkResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/drinks/favorite/add/": {
       "post": {
-        "tags": ["Drinks"],
-        "summary": "Adding Drink to Favorite",
+        "tags": [
+          "Drinks"
+        ],
+        "summary": "Adding drink to Favorite",
         "description": "Ендпоінт \"favorite/add\" використовується для додавання коктейлю в обране користувачеві\n",
         "operationId": "DrinksController_postDrinkFavorite",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
+          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
           "content": {
             "application/json": {
               "schema": {
@@ -566,13 +725,15 @@
     },
     "/drinks/favorite/remove/": {
       "delete": {
-        "tags": ["Drinks"],
-        "summary": "Removing Drink from Favorite",
+        "tags": [
+          "Drinks"
+        ],
+        "summary": "Removing drink from Favorite",
         "description": "Ендпоінт \"favorite/remove\" використовується для видалення коктейлю з обраного у користувача\n",
         "operationId": "DrinksController_deleteDrinkFromFavorite",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
+          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
           "content": {
             "application/json": {
               "schema": {
@@ -609,9 +770,11 @@
     },
     "/drinks/favorite/": {
       "get": {
-        "tags": ["Drinks"],
-        "summary": "Favorite Drinks",
-        "description": "Ендпоінт \"favorite\" використовується відображення списку коктейлю з обраного у користувача\n",
+        "tags": [
+          "Drinks"
+        ],
+        "summary": "Favorite drinks",
+        "description": "Ендпоінт \"favorite\" використовується для відображення списку коктейлів з обраного у користувача\n",
         "operationId": "DrinksController_getFavoriteDrinks",
         "parameters": [],
         "responses": {
@@ -643,7 +806,12 @@
   "components": {
     "schemas": {
       "RegistrationRequest": {
-        "required": ["name", "dateOfBirth", "email", "password"],
+        "required": [
+          "name",
+          "dateOfBirth",
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -702,7 +870,10 @@
         ]
       },
       "LoginRequest": {
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -757,7 +928,9 @@
             "description": "User token"
           }
         },
-        "required": ["token"]
+        "required": [
+          "token"
+        ]
       },
       "CurrentResponse": {
         "type": "object",
@@ -856,7 +1029,13 @@
         "items": {
           "type": "string"
         },
-        "example": ["Beer", "Cocktail", "Cocoa", "Coffee / Tea", "..."]
+        "example": [
+          "Beer",
+          "Cocktail",
+          "Cocoa",
+          "Coffee / Tea",
+          "..."
+        ]
       },
       "FilterIngredientsResponse": {
         "type": "array",
@@ -892,29 +1071,60 @@
             "items": {
               "type": "object",
               "properties": {
-                "drink": { "type": "string" },
-                "drinkAlternate": { "type": "string" },
-                "tags": { "type": "string" },
-                "video": { "type": "string" },
-                "category": { "type": "string" },
-                "IBA": { "type": "string" },
-                "alcoholic": { "type": "string" },
-                "glass": { "type": "string" },
-                "description": { "type": "string" },
-                "instructions": { "type": "string" },
-                "drinkThumb": { "type": "string" },
+                "drink": {
+                  "type": "string"
+                },
+                "drinkAlternate": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "string"
+                },
+                "video": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "IBA": {
+                  "type": "string"
+                },
+                "alcoholic": {
+                  "type": "string"
+                },
+                "glass": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "drinkThumb": {
+                  "type": "string"
+                },
                 "ingredients": {
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "title": { "type": "string" },
-                      "measure": { "type": "string" },
-                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                      "title": {
+                        "type": "string"
+                      },
+                      "measure": {
+                        "type": "string"
+                      },
+                      "ingredientId": {
+                        "type": "string",
+                        "format": "ObjectId"
+                      }
                     }
                   }
                 },
-                "shortDescription": { "type": "string" }
+                "shortDescription": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -923,29 +1133,60 @@
             "items": {
               "type": "object",
               "properties": {
-                "drink": { "type": "string" },
-                "drinkAlternate": { "type": "string" },
-                "tags": { "type": "string" },
-                "video": { "type": "string" },
-                "category": { "type": "string" },
-                "IBA": { "type": "string" },
-                "alcoholic": { "type": "string" },
-                "glass": { "type": "string" },
-                "description": { "type": "string" },
-                "instructions": { "type": "string" },
-                "drinkThumb": { "type": "string" },
+                "drink": {
+                  "type": "string"
+                },
+                "drinkAlternate": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "string"
+                },
+                "video": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "IBA": {
+                  "type": "string"
+                },
+                "alcoholic": {
+                  "type": "string"
+                },
+                "glass": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "drinkThumb": {
+                  "type": "string"
+                },
                 "ingredients": {
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "title": { "type": "string" },
-                      "measure": { "type": "string" },
-                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                      "title": {
+                        "type": "string"
+                      },
+                      "measure": {
+                        "type": "string"
+                      },
+                      "ingredientId": {
+                        "type": "string",
+                        "format": "ObjectId"
+                      }
                     }
                   }
                 },
-                "shortDescription": { "type": "string" }
+                "shortDescription": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -954,29 +1195,60 @@
             "items": {
               "type": "object",
               "properties": {
-                "drink": { "type": "string" },
-                "drinkAlternate": { "type": "string" },
-                "tags": { "type": "string" },
-                "video": { "type": "string" },
-                "category": { "type": "string" },
-                "IBA": { "type": "string" },
-                "alcoholic": { "type": "string" },
-                "glass": { "type": "string" },
-                "description": { "type": "string" },
-                "instructions": { "type": "string" },
-                "drinkThumb": { "type": "string" },
+                "drink": {
+                  "type": "string"
+                },
+                "drinkAlternate": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "string"
+                },
+                "video": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "IBA": {
+                  "type": "string"
+                },
+                "alcoholic": {
+                  "type": "string"
+                },
+                "glass": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "drinkThumb": {
+                  "type": "string"
+                },
                 "ingredients": {
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "title": { "type": "string" },
-                      "measure": { "type": "string" },
-                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                      "title": {
+                        "type": "string"
+                      },
+                      "measure": {
+                        "type": "string"
+                      },
+                      "ingredientId": {
+                        "type": "string",
+                        "format": "ObjectId"
+                      }
                     }
                   }
                 },
-                "shortDescription": { "type": "string" }
+                "shortDescription": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -985,29 +1257,60 @@
             "items": {
               "type": "object",
               "properties": {
-                "drink": { "type": "string" },
-                "drinkAlternate": { "type": "string" },
-                "tags": { "type": "string" },
-                "video": { "type": "string" },
-                "category": { "type": "string" },
-                "IBA": { "type": "string" },
-                "alcoholic": { "type": "string" },
-                "glass": { "type": "string" },
-                "description": { "type": "string" },
-                "instructions": { "type": "string" },
-                "drinkThumb": { "type": "string" },
+                "drink": {
+                  "type": "string"
+                },
+                "drinkAlternate": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "string"
+                },
+                "video": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "IBA": {
+                  "type": "string"
+                },
+                "alcoholic": {
+                  "type": "string"
+                },
+                "glass": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "drinkThumb": {
+                  "type": "string"
+                },
                 "ingredients": {
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "title": { "type": "string" },
-                      "measure": { "type": "string" },
-                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                      "title": {
+                        "type": "string"
+                      },
+                      "measure": {
+                        "type": "string"
+                      },
+                      "ingredientId": {
+                        "type": "string",
+                        "format": "ObjectId"
+                      }
                     }
                   }
                 },
-                "shortDescription": { "type": "string" }
+                "shortDescription": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -1018,43 +1321,98 @@
         "items": {
           "type": "object",
           "properties": {
-            "_id": { "type": "string", "format": "ObjectId" },
-            "drink": { "type": "string" },
-            "drinkAlternate": { "type": "string" },
-            "tags": { "type": "string" },
-            "video": { "type": "string" },
-            "category": { "type": "string" },
-            "IBA": { "type": "string" },
-            "alcoholic": { "type": "string" },
-            "glass": { "type": "string" },
-            "description": { "type": "string" },
-            "instructions": { "type": "string" },
-            "instructionsES": { "type": "string" },
-            "instructionsDE": { "type": "string" },
-            "instructionsFR": { "type": "string" },
-            "instructionsIT": { "type": "string" },
-            "instructionsRU": { "type": "string" },
-            "instructionsPL": { "type": "string" },
-            "instructionsUK": { "type": "string" },
-            "drinkThumb": { "type": "string", "format": "link" },
+            "_id": {
+              "type": "string",
+              "format": "ObjectId"
+            },
+            "drink": {
+              "type": "string"
+            },
+            "drinkAlternate": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "string"
+            },
+            "video": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "IBA": {
+              "type": "string"
+            },
+            "alcoholic": {
+              "type": "string"
+            },
+            "glass": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "instructions": {
+              "type": "string"
+            },
+            "instructionsES": {
+              "type": "string"
+            },
+            "instructionsDE": {
+              "type": "string"
+            },
+            "instructionsFR": {
+              "type": "string"
+            },
+            "instructionsIT": {
+              "type": "string"
+            },
+            "instructionsRU": {
+              "type": "string"
+            },
+            "instructionsPL": {
+              "type": "string"
+            },
+            "instructionsUK": {
+              "type": "string"
+            },
+            "drinkThumb": {
+              "type": "string",
+              "format": "link"
+            },
             "ingredients": {
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
-                  "title": { "type": "string" },
-                  "measure": { "type": "string" },
-                  "ingredientId": { "type": "string", "format": "ObjectId" }
+                  "title": {
+                    "type": "string"
+                  },
+                  "measure": {
+                    "type": "string"
+                  },
+                  "ingredientId": {
+                    "type": "string",
+                    "format": "ObjectId"
+                  }
                 }
               }
             },
-            "shortDescription": { "type": "string" },
-            "updatedAt": { "type": "string" },
+            "shortDescription": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string"
+            },
             "favorite": {
               "type": "array",
-              "items": { "type": "string" }
+              "items": {
+                "type": "string"
+              }
             },
-            "popularity": { "type": "integer" }
+            "popularity": {
+              "type": "integer"
+            }
           }
         },
         "example": [
@@ -1102,7 +1460,9 @@
             ],
             "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
             "updatedAt": "2024-02-16T19:28:22.859Z",
-            "favorite": ["65cf97bcb4481aee599a5df0"],
+            "favorite": [
+              "65cf97bcb4481aee599a5df0"
+            ],
             "popularity": 1
           }
         ]
@@ -1144,43 +1504,98 @@
         "items": {
           "type": "object",
           "properties": {
-            "_id": { "type": "string", "format": "ObjectId" },
-            "drink": { "type": "string" },
-            "drinkAlternate": { "type": "string" },
-            "tags": { "type": "string" },
-            "video": { "type": "string" },
-            "category": { "type": "string" },
-            "IBA": { "type": "string" },
-            "alcoholic": { "type": "string" },
-            "glass": { "type": "string" },
-            "description": { "type": "string" },
-            "instructions": { "type": "string" },
-            "instructionsES": { "type": "string" },
-            "instructionsDE": { "type": "string" },
-            "instructionsFR": { "type": "string" },
-            "instructionsIT": { "type": "string" },
-            "instructionsRU": { "type": "string" },
-            "instructionsPL": { "type": "string" },
-            "instructionsUK": { "type": "string" },
-            "drinkThumb": { "type": "string", "format": "link" },
+            "_id": {
+              "type": "string",
+              "format": "ObjectId"
+            },
+            "drink": {
+              "type": "string"
+            },
+            "drinkAlternate": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "string"
+            },
+            "video": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "IBA": {
+              "type": "string"
+            },
+            "alcoholic": {
+              "type": "string"
+            },
+            "glass": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "instructions": {
+              "type": "string"
+            },
+            "instructionsES": {
+              "type": "string"
+            },
+            "instructionsDE": {
+              "type": "string"
+            },
+            "instructionsFR": {
+              "type": "string"
+            },
+            "instructionsIT": {
+              "type": "string"
+            },
+            "instructionsRU": {
+              "type": "string"
+            },
+            "instructionsPL": {
+              "type": "string"
+            },
+            "instructionsUK": {
+              "type": "string"
+            },
+            "drinkThumb": {
+              "type": "string",
+              "format": "link"
+            },
             "ingredients": {
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
-                  "title": { "type": "string" },
-                  "measure": { "type": "string" },
-                  "ingredientId": { "type": "string", "format": "ObjectId" }
+                  "title": {
+                    "type": "string"
+                  },
+                  "measure": {
+                    "type": "string"
+                  },
+                  "ingredientId": {
+                    "type": "string",
+                    "format": "ObjectId"
+                  }
                 }
               }
             },
-            "shortDescription": { "type": "string" },
-            "updatedAt": { "type": "string" },
+            "shortDescription": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string"
+            },
             "favorite": {
               "type": "array",
-              "items": { "type": "string" }
+              "items": {
+                "type": "string"
+              }
             },
-            "popularity": { "type": "integer" }
+            "popularity": {
+              "type": "integer"
+            }
           }
         },
         "example": [
@@ -1228,7 +1643,9 @@
             ],
             "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
             "updatedAt": "2024-02-16T19:28:22.859Z",
-            "favorite": ["65cf97bcb4481aee599a5df0"],
+            "favorite": [
+              "65cf97bcb4481aee599a5df0"
+            ],
             "popularity": 1
           }
         ]
@@ -1251,37 +1668,86 @@
           "recipe": {
             "type": "object",
             "properties": {
-              "_id": { "type": "string", "format": "ObjectId" },
-              "drink": { "type": "string" },
-              "drinkAlternate": { "type": "string" },
-              "tags": { "type": "string" },
-              "video": { "type": "string" },
-              "category": { "type": "string" },
-              "IBA": { "type": "string" },
-              "alcoholic": { "type": "string" },
-              "glass": { "type": "string" },
-              "description": { "type": "string" },
-              "instructions": { "type": "string" },
-              "instructionsES": { "type": "string" },
-              "instructionsDE": { "type": "string" },
-              "instructionsFR": { "type": "string" },
-              "instructionsIT": { "type": "string" },
-              "instructionsRU": { "type": "string" },
-              "instructionsPL": { "type": "string" },
-              "instructionsUK": { "type": "string" },
-              "drinkThumb": { "type": "string", "format": "link" },
+              "_id": {
+                "type": "string",
+                "format": "ObjectId"
+              },
+              "drink": {
+                "type": "string"
+              },
+              "drinkAlternate": {
+                "type": "string"
+              },
+              "tags": {
+                "type": "string"
+              },
+              "video": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "IBA": {
+                "type": "string"
+              },
+              "alcoholic": {
+                "type": "string"
+              },
+              "glass": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "instructions": {
+                "type": "string"
+              },
+              "instructionsES": {
+                "type": "string"
+              },
+              "instructionsDE": {
+                "type": "string"
+              },
+              "instructionsFR": {
+                "type": "string"
+              },
+              "instructionsIT": {
+                "type": "string"
+              },
+              "instructionsRU": {
+                "type": "string"
+              },
+              "instructionsPL": {
+                "type": "string"
+              },
+              "instructionsUK": {
+                "type": "string"
+              },
+              "drinkThumb": {
+                "type": "string",
+                "format": "link"
+              },
               "ingredients": {
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "title": { "type": "string" },
-                    "measure": { "type": "string" },
-                    "ingredientId": { "type": "string", "format": "ObjectId" }
+                    "title": {
+                      "type": "string"
+                    },
+                    "measure": {
+                      "type": "string"
+                    },
+                    "ingredientId": {
+                      "type": "string",
+                      "format": "ObjectId"
+                    }
                   }
                 }
               },
-              "shortDescription": { "type": "string" }
+              "shortDescription": {
+                "type": "string"
+              }
             }
           },
           "ingredients": {
@@ -1289,17 +1755,43 @@
             "items": {
               "type": "object",
               "properties": {
-                "_id": { "type": "string", "format": "ObjectId" },
-                "ingredientThumb": { "type": "string", "format": "link" },
-                "thumb-medium": { "type": "string", "format": "link" },
-                "thumb-small": { "type": "string", "format": "link" },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "type": { "type": "string" },
-                "alcohol": { "type": "string" },
-                "abv": { "type": "string" },
-                "flavour": { "type": "string" },
-                "country": { "type": "string" }
+                "_id": {
+                  "type": "string",
+                  "format": "ObjectId"
+                },
+                "ingredientThumb": {
+                  "type": "string",
+                  "format": "link"
+                },
+                "thumb-medium": {
+                  "type": "string",
+                  "format": "link"
+                },
+                "thumb-small": {
+                  "type": "string",
+                  "format": "link"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "alcohol": {
+                  "type": "string"
+                },
+                "abv": {
+                  "type": "string"
+                },
+                "flavour": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -1389,16 +1881,151 @@
           ]
         }
       },
+      "MyDrinkRequest": {
+        "required": [
+          "drink",
+          "shortDescription",
+          "category",
+          "glass",
+          "alcoholic",
+          "ingredients",
+          "instructions"
+        ],
+        "type": "object",
+        "properties": {
+          "drink": {
+            "type": "string",
+            "description": "Drink title",
+            "example": "Gin Lemon"
+          },
+          "shortDescription": {
+            "type": "string",
+            "description": "Short description about the drink",
+            "example": "A gin and tonic is a hignball cocktail..."
+          },
+          "category": {
+            "type": "string",
+            "description": "Drink category",
+            "example": "Cocktail"
+          },
+          "alcoholic": {
+            "type": "string",
+            "description": "Alcoholic or Non Alcoholic drink",
+            "example": "Alcoholic"
+          },
+          "ingredients": {
+            "type": "array",
+            "description": "Drink ingredients"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Drink instructions",
+            "example": "Pour schnapps, orange juice, and..."
+          }
+        },
+        "example": {
+          "drink": "Quentin",
+          "shortDescription": "A refreshing and citrusy cocktail with...",
+          "category": "Ordinary Drink",
+          "glass": "Cocktail glass",
+          "alcoholic": "Alcoholic",
+          "ingredients": [
+            {
+              "title": "Dark rum",
+              "measure": "1 1/2 oz ",
+              "ingredientId": {
+                "$oid": "64aebb7f82d96cc69e0eb4a7"
+              }
+            },
+            {
+              "title": "Kahlua",
+              "measure": "1/2 oz ",
+              "ingredientId": {
+                "$oid": "64aebb7f82d96cc69e0eb4bd"
+              }
+            }
+          ],
+          "instructions": "In a shaker half-filled with ice cubes..."
+        }
+      },
+      "MyDrinkResponse": {
+        "type": "object",
+        "properties": {
+          "drink": {
+            "type": "string",
+            "description": "Drink title",
+            "example": "Gin Lemon"
+          },
+          "shortDescription": {
+            "type": "string",
+            "description": "Short description about the drink",
+            "example": "A gin and tonic is a hignball cocktail..."
+          },
+          "category": {
+            "type": "string",
+            "description": "Drink category",
+            "example": "Cocktail"
+          },
+          "alcoholic": {
+            "type": "string",
+            "description": "Alcoholic or Non Alcoholic drink",
+            "example": "Alcoholic"
+          },
+          "ingredients": {
+            "type": "array",
+            "description": "Drink ingredients"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Drink instructions",
+            "example": "Pour schnapps, orange juice, and..."
+          }
+        },
+        "example": {
+          "_id": {
+            "$oid": "65d07c6e3cd1b43ba930dcc2"
+          },
+          "drink": "Quentin",
+          "drinkAlternate": "Sorry, not specified",
+          "category": "Ordinary Drink",
+          "alcoholic": "Alcoholic",
+          "glass": "Cocktail glass",
+          "instructions": "In a shaker half-filled with ice cubes...",
+          "drinkThumb": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708162155/IMG_0230_t2gfrb.jpg",
+          "ingredients": [
+            {
+              "title": "Dark rum",
+              "measure": "1 1/2 oz ",
+              "ingredientId": {
+                "$oid": "64aebb7f82d96cc69e0eb4a7"
+              }
+            },
+            {
+              "title": "Kahlua",
+              "measure": "1/2 oz ",
+              "ingredientId": {
+                "$oid": "64aebb7f82d96cc69e0eb4bd"
+              }
+            }
+          ],
+          "favorite": [],
+          "popularity": 0,
+          "shortDescription": "A refreshing and citrusy cocktail with...",
+          "owner": {
+            "$oid": "65d0797eb4ab8be89dd0caf1"
+          }
+        }
+      },
       "DrinkToFavoriteRequest": {
         "type": "http",
         "properties": {
-          "drinkId": {
+          "id": {
             "type": "string",
             "description": "Drink ID"
           }
         },
         "example": {
-          "drinkId": "639b6de9ff77d221f190c51c"
+          "id": "639b6de9ff77d221f190c51c"
         }
       },
       "DrinkToFavoriteResponse": {
