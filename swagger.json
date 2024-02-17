@@ -423,20 +423,40 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Drinks search",
-        "description": "Ендпоінт \"search\" використовується для пошуку коктейлів обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
+        "description": "Ендпоінт \"search\" використовується для пошуку коктейлів обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n\n# Опис параметрів запиту:\n\n**drink** - string, назва коктейлю для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
         "operationId": "DrinksController_getSearch",
-        "parameters": [],
-        "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**drink** - string, назва коктейлю для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DrinksSearchRequest"
-              }
-            }
+        "parameters": [
+          {
+            "name": "drink",
+            "in": "query",
+            "schema": { "type": "string" },
+            "value": ""
           },
-          "required": true
-        },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": { "type": "string" },
+            "value": ""
+          },
+          {
+            "name": "ingredients",
+            "in": "query",
+            "schema": { "type": "string" },
+            "value": ""
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "number" },
+            "value": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "number" },
+            "value": "9"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Drinks returned\n\nМасив, який містить список коктейлів, які відповідають критеріям пошуку\n",
@@ -462,24 +482,20 @@
         ]
       }
     },
-    "/drinks/:id": {
+    "/drinks/{id}": {
       "get": {
         "tags": ["Drinks"],
         "summary": "Drink Information",
-        "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про коктейль та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n",
+        "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про коктейль та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n\n# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
         "operationId": "DrinksController_getDrinkInfo",
-        "parameters": [],
-        "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DrinkInfoRequest"
-              }
-            }
-          },
-          "required": true
-        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": { "type": "string" },
+            "value": "639b6de9ff77d221f190c50d"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Drink returned\n\nОб`єкт з повними даними про коктейль та дані про його інгредієнти\n",
@@ -513,7 +529,7 @@
         "operationId": "DrinksController_postDrinkFavorite",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
           "content": {
             "application/json": {
               "schema": {
@@ -556,7 +572,7 @@
         "operationId": "DrinksController_deleteDrinkFromFavorite",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
           "content": {
             "application/json": {
               "schema": {
@@ -1376,13 +1392,13 @@
       "DrinkToFavoriteRequest": {
         "type": "http",
         "properties": {
-          "id": {
+          "drinkId": {
             "type": "string",
             "description": "Drink ID"
           }
         },
         "example": {
-          "id": "639b6de9ff77d221f190c51c"
+          "drinkId": "639b6de9ff77d221f190c51c"
         }
       },
       "DrinkToFavoriteResponse": {
