@@ -3,30 +3,28 @@ const router = express.Router();
 
 const wrapper = require("../../helpers/wrapper");
 const method = require("../../controllers/drinks");
-const { validateToken } = require("../../middlewares");
 
-router.get("/mainpage", validateToken, wrapper(method.getMainPage));
+const { validateSchema } = require('../../middlewares/index')
+const { addMyJoiSchema } = require('../../models/joiSchemas/drink')
 
-router.get("/popular", validateToken, wrapper(method.getPopular));
+router.get("/mainpage", wrapper(method.getMainPage));
 
-router.get("/search", validateToken, wrapper(method.search));
+router.get("/popular", wrapper(method.getPopular));
 
-router.post("/own/add", wrapper(method.addMy));
+router.get("/search", wrapper(method.search));
+
+router.get("/:id", wrapper(method.getById));
+
+router.post("/own/add", validateSchema(addMyJoiSchema), wrapper(method.addMy));
 
 router.delete("/own/remove/:id", wrapper(method.removeMy));
 
 router.get("/own", wrapper(method.getMy));
 
-router.post("/favorite/add", validateToken, wrapper(method.addFavorite));
+router.post("/favorite/add", wrapper(method.addFavorite));
 
-router.delete(
-  "/favorite/remove",
-  validateToken,
-  wrapper(method.removeFavorite)
-);
+router.delete("/favorite/remove", wrapper(method.removeFavorite));
 
-router.get("/favorite", validateToken, wrapper(method.getFavorite));
-
-router.get("/:id", validateToken, wrapper(method.getById));
+router.get("/favorite", wrapper(method.getFavorite));
 
 module.exports = router;

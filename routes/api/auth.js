@@ -8,11 +8,7 @@ const { loginJoiSchema } = require("../../models/joiSchemas/auth");
 const { wrapper } = require("../../helpers");
 const method = require("../../controllers/auth/index");
 
-router.post(
-  "/signup",
-  validateSchema(registerJoiSchema),
-  wrapper(method.register)
-);
+router.post("/signup", validateSchema(registerJoiSchema), wrapper(method.register));
 
 router.post("/signin", validateSchema(loginJoiSchema), wrapper(method.login));
 

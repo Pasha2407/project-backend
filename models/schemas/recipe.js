@@ -7,6 +7,7 @@ const recipeSchema = new mongoose.Schema(
     },
     drinkAlternate: {
       type: String,
+      default: 'Sorry, not specified'
     },
     tags: {
       type: String,
