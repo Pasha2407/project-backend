@@ -7,26 +7,36 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api"
+      "url": "https://project-backend-0pzg.onrender.com/api"
     }
   ],
   "tags": [
     {
       "name": "Auth",
       "description": "Authorization endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Filter",
+      "description": "Filter endpoints"
+    },
+    {
+      "name": "Drinks",
+      "description": "Drinks endpoints"
     }
   ],
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User registration",
         "operationId": "AuthController_signup",
         "parameters": [],
         "requestBody": {
-          "description": "Registration object",
+          "description": "# Опис параметрів запиту:\n**name** - string, ім'я користувача.\n\n**dateOfBirth** - date, дата народження користувача користувача.\n\n**email** - string, електронна пошта користувача.\n\n**password** - string, зашифрований пароль користувача.",
           "content": {
             "application/json": {
               "schema": {
@@ -38,7 +48,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful user registration",
+            "description": "Successful user registration\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**token** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.",
             "content": {
               "application/json": {
                 "schema": {
@@ -61,14 +71,12 @@
     },
     "/auth/signin": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "User login",
+        "tags": ["Auth"],
+        "summary": "Sign in existing user",
         "operationId": "AuthController_signin",
         "parameters": [],
         "requestBody": {
-          "description": "Login object",
+          "description": "# Опис параметрів запиту:\n\n**email** - string, електронна пошта користувача. **Обов'язковий параметр**\n\n**password** - string, зашифрований пароль користувача. **Обов'язковий параметр**\n",
           "content": {
             "application/json": {
               "schema": {
@@ -80,7 +88,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful user login",
+            "description": "Successful user login\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**token** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.",
             "content": {
               "application/json": {
                 "schema": {
@@ -103,10 +111,9 @@
     },
     "/auth/signout": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "User logout",
+        "tags": ["Auth"],
+        "summary": "Signs out user",
+        "description": "Ендпоінт логауту - це механізм виходу з системи, який припиняє дію сесії користувача та знищує токен доступу, що був виданий при попередній аутентифікації.\n\nОпис: Коли користувач натискає кнопку вийти з системи, він робить запит на URL /auth/signout з валідним токеном у заголовку Authorization. Сервер перевіряє валідність токена, якщо токен є дійсним, то сесія користувача закривається, токен видаляється і користувач повертається на сторінку входу в систему.\n",
         "operationId": "AuthController_signout",
         "parameters": [],
         "responses": {
@@ -126,17 +133,501 @@
           }
         ]
       }
+    },
+    "/users/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get current user info",
+        "description": "Ендпоінт \"current\" використовується для отримання інформації про поточного авторизованого користувача. Цей ендпоінт повертає об'єкт, який містить інформацію про користувача, таку як електронна пошта та ідентифікатор користувача.\n",
+        "operationId": "UsersController_LoggedUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Logged user returned\n\nJSON-об'єкт, який містить інформацію про поточного авторизованого користувача.\n\nОпис параметрів відповіді:\n\n**id** - ObjectId, унікальний ідентифікатор користувача\n\n**email** - string, електронна пошта користувача.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bearer auth failed - Якщо запит не містить дійсний токен або токен вже вичерпав свій термін дії, сервер поверне відповідь з кодом статусу HTTP 401 Unauthorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_401"
+                },
+                "example": {
+                  "message": "Authentication failed. Please log in."
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/update": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update user info",
+        "description": "Ендпоінт \"update\" використовується для оновлення імені та аватара користувача. Можливе оновлення обох значень або тільки одного з двох. Цей ендпоінт повертає об'єкт, який містить інформацію про користувача, таку як нове ім`я та посилання на новий аватар, завантажений на сервер Cloudinary.\n",
+        "operationId": "UsersController_patchUpdateUser",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n**name** - string, нове ім`я користувача. **Необов'язковий параметр**\n\n**avatar** - file, новий аватар користувача. **Необов'язковий параметр**\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated user returned\n\nJSON-об'єкт, який містить оновлену інформацію про поточного авторизованого користувача.\n\nОпис параметрів відповіді:\n\n**id** - ObjectId, унікальний ідентифікатор користувача\n\n**name** - string, нове ім`я користувача.\n\n**avatarURL** - string, посилання на новий аватар користувача.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/subscribe": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Subscribe for updates",
+        "description": "Ендпоінт \"subscribe\" використовується для отримання підтвердження на підписку від користувача шляхом введення пошти, вказаної при реєстрації. У випадку розбіжності пошти у підписці буде відмовлено.\n",
+        "operationId": "UsersController_postSubscribeUser",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n**email** - string, email, на який користувач хоче оформити підписку. **Обов'язковий параметр**\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Subscribed user returned\n\nJSON-об'єкт, який містить оновлену інформацію про поточного авторизованого користувача.\n\nОпис параметрів відповіді:\n\n**email** - string, пошта, на яку оформлено підписку\n\n**subscribed** - boolean, значення підписки.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscribeUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "403": {
+            "description": "Not own email"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/filters/categories": {
+      "get": {
+        "tags": ["Filter"],
+        "summary": "Drinks categories list",
+        "description": "Ендпоінт \"categories\" використовується для отримання списку категорій коктейлів, відсортованих за алфавітом\n",
+        "operationId": "FilterController_getCategories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Categories list returned\n\nМасив, який містить список категорій коктейлів, відсортованих за алфавітом\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilterCategoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/filters/ingredients": {
+      "get": {
+        "tags": ["Filter"],
+        "summary": "Drinks ingredients list",
+        "description": "Ендпоінт \"ingredients\" використовується для отримання списку інгредієнтів коктейлів, відсортованих за алфавітом\n",
+        "operationId": "FilterController_getIngredients",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Ingredients list returned\n\nМасив, який містить список інгредієнтів коктейлів, відсортованих за алфавітом\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilterIngredientsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/filters/glasses": {
+      "get": {
+        "tags": ["Filter"],
+        "summary": "Drinks glasses list",
+        "description": "Ендпоінт \"glasses\" використовується для отримання списку тари для сервірування напоїв, відсортованих за алфавітом\n",
+        "operationId": "FilterController_getGlasses",
+        "responses": {
+          "200": {
+            "description": "Glasses list returned\n\nМасив, який містить список тари для сервірування напоїв, відсортованих за алфавітом\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilterGlassesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/mainpage": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Drinks list for MainPage",
+        "description": "Ендпоінт \"mainpage\" використовується для отримання списку з трьох коктейлів чотирьох зазначених категорій: Ordinary Drink, Cocktail, Shake та Other/Unknown. Коктейлі відсортовані по даті додавання в систему. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
+        "operationId": "DrinksController_getMainpage",
+        "responses": {
+          "200": {
+            "description": "Drinks returned\n\nМасив, який містить список коктейлів з чотирьох категорій для виводу на головній сторінці\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinksMainpageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/popular": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Drinks sorted by popularity",
+        "description": "Ендпоінт \"popular\" використовується для отримання списку коктейлів, відсортованих на основі кількості додавань до обраного користувачами. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
+        "operationId": "DrinksController_getPopular",
+        "responses": {
+          "200": {
+            "description": "Drinks returned\n\nМасив, який містить список коктейлів, відсортованих на основі кількості додавань до обраного користувачами\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinksPopularResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/search": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Drinks search",
+        "description": "Ендпоінт \"search\" використовується для пошуку коктейлів обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
+        "operationId": "DrinksController_getSearch",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n**drink** - string, назва коктейлю для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DrinksSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Drinks returned\n\nМасив, який містить список коктейлів, які відповідають критеріям пошуку\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinksSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/:id": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Drink Information",
+        "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про коктейль та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n",
+        "operationId": "DrinksController_getDrinkInfo",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DrinkInfoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Drink returned\n\nОб`єкт з повними даними про коктейль та дані про його інгредієнти\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinkInfoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/favorite/add/": {
+      "post": {
+        "tags": ["Drinks"],
+        "summary": "Adding Drink to Favorite",
+        "description": "Ендпоінт \"favorite/add\" використовується для додавання коктейлю в обране користувачеві\n",
+        "operationId": "DrinksController_postDrinkFavorite",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DrinkToFavoriteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Drink returned\n\nОб`єкт з даними про коктейль та користувача\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinkToFavoriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/favorite/remove/": {
+      "delete": {
+        "tags": ["Drinks"],
+        "summary": "Removing Drink from Favorite",
+        "description": "Ендпоінт \"favorite/remove\" використовується для видалення коктейлю з обраного у користувача\n",
+        "operationId": "DrinksController_deleteDrinkFromFavorite",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DrinkToFavoriteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Drink returned\n\nОб`єкт з даними про коктейль та користувача\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinkToFavoriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/drinks/favorite/": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Favorite Drinks",
+        "description": "Ендпоінт \"favorite\" використовується відображення списку коктейлю з обраного у користувача\n",
+        "operationId": "DrinksController_getFavoriteDrinks",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Drinks returned\n\nОб`єкт з даними про обрані коктейлі користувача\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinksPopularResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
       "RegistrationRequest": {
-        "required": [
-          "name",
-          "dateOfBirth",
-          "email",
-          "password"
-        ],
+        "required": ["name", "dateOfBirth", "email", "password"],
         "type": "object",
         "properties": {
           "name": {
@@ -147,7 +638,8 @@
           "dateOfBirth": {
             "type": "string",
             "description": "User date of birth",
-            "format": "date"
+            "format": "date",
+            "example": "2024-02-17"
           },
           "email": {
             "type": "string",
@@ -194,10 +686,7 @@
         ]
       },
       "LoginRequest": {
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "type": "object",
         "properties": {
           "email": {
@@ -243,6 +732,686 @@
             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
           }
         ]
+      },
+      "CurrentRequest": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "User token"
+          }
+        },
+        "required": ["token"]
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "format": "email"
+          },
+          "id": {
+            "type": "string",
+            "description": "User id",
+            "format": "ObjectId"
+          }
+        },
+        "example": {
+          "email": "user@example.com",
+          "id": "789898789..."
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "New user name"
+          },
+          "avatar": {
+            "type": "file",
+            "description": "New user avatar"
+          }
+        },
+        "example": {
+          "name": "Gal Gadot",
+          "avatar": "Put file"
+        }
+      },
+      "UpdateUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Current user ID",
+            "format": "ObjectId"
+          },
+          "name": {
+            "type": "string",
+            "description": "New user name",
+            "format": "string"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "New user avatar",
+            "format": "link"
+          }
+        },
+        "example": {
+          "id": "65cf97bcb4481aee599a5df0",
+          "name": "Gal Gadot",
+          "avatarURL": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708164056/Gal_Gadot_wtdgy4.jpg"
+        }
+      },
+      "SubscribeUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Current user email",
+            "format": "email"
+          }
+        },
+        "example": {
+          "email": "dozeran@pm.met"
+        }
+      },
+      "SubscribeUserResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Current user email",
+            "format": "email"
+          },
+          "subscribed": {
+            "type": "string",
+            "description": "Subscribe true or false"
+          }
+        },
+        "example": {
+          "email": "dozeran@pm.me",
+          "subscribed": true
+        }
+      },
+      "FilterCategoriesResponse": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": ["Beer", "Cocktail", "Cocoa", "Coffee / Tea", "..."]
+      },
+      "FilterIngredientsResponse": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "151 proof rum",
+          "7-Up",
+          "Absinthe",
+          "Absolut Citron",
+          "..."
+        ]
+      },
+      "FilterGlassesResponse": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "Balloon Glass",
+          "Beer Glass",
+          "Beer mug",
+          "Beer pilsner",
+          "..."
+        ]
+      },
+      "DrinksMainpageResponse": {
+        "type": "object",
+        "properties": {
+          "Ordinary Drink": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "drink": { "type": "string" },
+                "drinkAlternate": { "type": "string" },
+                "tags": { "type": "string" },
+                "video": { "type": "string" },
+                "category": { "type": "string" },
+                "IBA": { "type": "string" },
+                "alcoholic": { "type": "string" },
+                "glass": { "type": "string" },
+                "description": { "type": "string" },
+                "instructions": { "type": "string" },
+                "drinkThumb": { "type": "string" },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "measure": { "type": "string" },
+                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                    }
+                  }
+                },
+                "shortDescription": { "type": "string" }
+              }
+            }
+          },
+          "Cocktail": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "drink": { "type": "string" },
+                "drinkAlternate": { "type": "string" },
+                "tags": { "type": "string" },
+                "video": { "type": "string" },
+                "category": { "type": "string" },
+                "IBA": { "type": "string" },
+                "alcoholic": { "type": "string" },
+                "glass": { "type": "string" },
+                "description": { "type": "string" },
+                "instructions": { "type": "string" },
+                "drinkThumb": { "type": "string" },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "measure": { "type": "string" },
+                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                    }
+                  }
+                },
+                "shortDescription": { "type": "string" }
+              }
+            }
+          },
+          "Shake": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "drink": { "type": "string" },
+                "drinkAlternate": { "type": "string" },
+                "tags": { "type": "string" },
+                "video": { "type": "string" },
+                "category": { "type": "string" },
+                "IBA": { "type": "string" },
+                "alcoholic": { "type": "string" },
+                "glass": { "type": "string" },
+                "description": { "type": "string" },
+                "instructions": { "type": "string" },
+                "drinkThumb": { "type": "string" },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "measure": { "type": "string" },
+                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                    }
+                  }
+                },
+                "shortDescription": { "type": "string" }
+              }
+            }
+          },
+          "Other/Unknown": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "drink": { "type": "string" },
+                "drinkAlternate": { "type": "string" },
+                "tags": { "type": "string" },
+                "video": { "type": "string" },
+                "category": { "type": "string" },
+                "IBA": { "type": "string" },
+                "alcoholic": { "type": "string" },
+                "glass": { "type": "string" },
+                "description": { "type": "string" },
+                "instructions": { "type": "string" },
+                "drinkThumb": { "type": "string" },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "measure": { "type": "string" },
+                      "ingredientId": { "type": "string", "format": "ObjectId" }
+                    }
+                  }
+                },
+                "shortDescription": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "DrinksPopularResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": { "type": "string", "format": "ObjectId" },
+            "drink": { "type": "string" },
+            "drinkAlternate": { "type": "string" },
+            "tags": { "type": "string" },
+            "video": { "type": "string" },
+            "category": { "type": "string" },
+            "IBA": { "type": "string" },
+            "alcoholic": { "type": "string" },
+            "glass": { "type": "string" },
+            "description": { "type": "string" },
+            "instructions": { "type": "string" },
+            "instructionsES": { "type": "string" },
+            "instructionsDE": { "type": "string" },
+            "instructionsFR": { "type": "string" },
+            "instructionsIT": { "type": "string" },
+            "instructionsRU": { "type": "string" },
+            "instructionsPL": { "type": "string" },
+            "instructionsUK": { "type": "string" },
+            "drinkThumb": { "type": "string", "format": "link" },
+            "ingredients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "measure": { "type": "string" },
+                  "ingredientId": { "type": "string", "format": "ObjectId" }
+                }
+              }
+            },
+            "shortDescription": { "type": "string" },
+            "updatedAt": { "type": "string" },
+            "favorite": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "popularity": { "type": "integer" }
+          }
+        },
+        "example": [
+          {
+            "_id": "639b6de9ff77d221f190c508",
+            "drink": "Irish Coffee",
+            "drinkAlternate": "Sorry, not specified",
+            "tags": "IBA,ContemporaryClassic",
+            "video": "https://youtu.be/9xwtCHELxMA?si=j9qrBEoFTqqgPVCr",
+            "category": "Coffee / Tea",
+            "IBA": "Contemporary Classics",
+            "alcoholic": "Alcoholic",
+            "glass": "Irish coffee cup",
+            "description": "Irish Coffee is a classic hot cocktail that combines the richness of coffee with the smoothness of Irish whiskey. It is made by pouring hot coffee into a glass, adding a shot of Irish whiskey, and topping it off with a dollop of whipped cream. The warmth of the drink and the sweetness of the cream make it a comforting and indulgent treat.",
+            "instructions": "Heat the coffee, whiskey and sugar; do not boil. Pour into glass and top with cream; serve hot.",
+            "instructionsES": "Calienta el café, el whisky y el azúcar; no hierva. Vierta en un vaso y cubra con crema; servir caliente.",
+            "instructionsDE": "Kaffee, Whiskey und Zucker erhitzen; nicht kochen lassen. In ein Glas geben und mit Sahne übergießen; heiß servieren.",
+            "instructionsFR": "Faire chauffer le café, le whisky et le sucre ; ne pas faire bouillir. Verser dans un verre et garnir de crème; Servir chaud.",
+            "instructionsIT": "Riscaldare il caffè, il whisky e lo zucchero; non bollire. Versare nel bicchiere e ricoprire con la panna; servito caldo.",
+            "instructionsRU": "Нагрейте кофе, виски и сахар; не кипятить. Перелейте в стакан и украсьте сливками; подавать горячим.",
+            "instructionsPL": "Podgrzej kawę, whisky i cukier; nie gotuj. Wlać do szklanki i posypać śmietaną; podawać na gorąco.",
+            "instructionsUK": "Розігріти каву, віскі і цукор; не кип'ятити. Перелити в келих і зверху полити кремом; подавати гарячим.",
+            "drinkThumb": "https://ftp.goit.study/img/drinkify/recipes/Irish_Coffee.jpg",
+            "ingredients": [
+              {
+                "title": "Irish whiskey",
+                "measure": "1 1/2 oz ",
+                "ingredientId": "64aebb7f82d96cc69e0eb4c2"
+              },
+              {
+                "title": "Coffee",
+                "measure": "8 oz ",
+                "ingredientId": "64aebb7f82d96cc69e0eb4e7"
+              },
+              {
+                "title": "Sugar",
+                "measure": "1 tsp ",
+                "ingredientId": "64aebb7f82d96cc69e0eb4bc"
+              },
+              {
+                "title": "Whipped cream",
+                "measure": "1 tblsp ",
+                "ingredientId": "64f1d5c069d8333cf130fb38"
+              }
+            ],
+            "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
+            "updatedAt": "2024-02-16T19:28:22.859Z",
+            "favorite": ["65cf97bcb4481aee599a5df0"],
+            "popularity": 1
+          }
+        ]
+      },
+      "DrinksSearchRequest": {
+        "type": "http",
+        "properties": {
+          "drink": {
+            "type": "string",
+            "description": "Drink for search"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category for search"
+          },
+          "ingredient": {
+            "type": "string",
+            "description": "Ingredient for search"
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Items limit"
+          }
+        },
+        "example": {
+          "drink": "Chocolate",
+          "category": "Coffee / Tea",
+          "ingredient": "Coffee",
+          "page": 1,
+          "limit": 9
+        }
+      },
+      "DrinksSearchResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": { "type": "string", "format": "ObjectId" },
+            "drink": { "type": "string" },
+            "drinkAlternate": { "type": "string" },
+            "tags": { "type": "string" },
+            "video": { "type": "string" },
+            "category": { "type": "string" },
+            "IBA": { "type": "string" },
+            "alcoholic": { "type": "string" },
+            "glass": { "type": "string" },
+            "description": { "type": "string" },
+            "instructions": { "type": "string" },
+            "instructionsES": { "type": "string" },
+            "instructionsDE": { "type": "string" },
+            "instructionsFR": { "type": "string" },
+            "instructionsIT": { "type": "string" },
+            "instructionsRU": { "type": "string" },
+            "instructionsPL": { "type": "string" },
+            "instructionsUK": { "type": "string" },
+            "drinkThumb": { "type": "string", "format": "link" },
+            "ingredients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "measure": { "type": "string" },
+                  "ingredientId": { "type": "string", "format": "ObjectId" }
+                }
+              }
+            },
+            "shortDescription": { "type": "string" },
+            "updatedAt": { "type": "string" },
+            "favorite": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "popularity": { "type": "integer" }
+          }
+        },
+        "example": [
+          {
+            "_id": "639b6de9ff77d221f190c508",
+            "drink": "Irish Coffee",
+            "drinkAlternate": "Sorry, not specified",
+            "tags": "IBA,ContemporaryClassic",
+            "video": "https://youtu.be/9xwtCHELxMA?si=j9qrBEoFTqqgPVCr",
+            "category": "Coffee / Tea",
+            "IBA": "Contemporary Classics",
+            "alcoholic": "Alcoholic",
+            "glass": "Irish coffee cup",
+            "description": "Irish Coffee is a classic hot cocktail that combines the richness of coffee with the smoothness of Irish whiskey. It is made by pouring hot coffee into a glass, adding a shot of Irish whiskey, and topping it off with a dollop of whipped cream. The warmth of the drink and the sweetness of the cream make it a comforting and indulgent treat.",
+            "instructions": "Heat the coffee, whiskey and sugar; do not boil. Pour into glass and top with cream; serve hot.",
+            "instructionsES": "Calienta el café, el whisky y el azúcar; no hierva. Vierta en un vaso y cubra con crema; servir caliente.",
+            "instructionsDE": "Kaffee, Whiskey und Zucker erhitzen; nicht kochen lassen. In ein Glas geben und mit Sahne übergießen; heiß servieren.",
+            "instructionsFR": "Faire chauffer le café, le whisky et le sucre ; ne pas faire bouillir. Verser dans un verre et garnir de crème; Servir chaud.",
+            "instructionsIT": "Riscaldare il caffè, il whisky e lo zucchero; non bollire. Versare nel bicchiere e ricoprire con la panna; servito caldo.",
+            "instructionsRU": "Нагрейте кофе, виски и сахар; не кипятить. Перелейте в стакан и украсьте сливками; подавать горячим.",
+            "instructionsPL": "Podgrzej kawę, whisky i cukier; nie gotuj. Wlać do szklanki i posypać śmietaną; podawać na gorąco.",
+            "instructionsUK": "Розігріти каву, віскі і цукор; не кип'ятити. Перелити в келих і зверху полити кремом; подавати гарячим.",
+            "drinkThumb": "https://ftp.goit.study/img/drinkify/recipes/Irish_Coffee.jpg",
+            "ingredients": [
+              {
+                "title": "Irish whiskey",
+                "measure": "1 1/2 oz ",
+                "ingredientId": "64aebb7f82d96cc69e0eb4c2"
+              },
+              {
+                "title": "Coffee",
+                "measure": "8 oz ",
+                "ingredientId": "64aebb7f82d96cc69e0eb4e7"
+              },
+              {
+                "title": "Sugar",
+                "measure": "1 tsp ",
+                "ingredientId": "64aebb7f82d96cc69e0eb4bc"
+              },
+              {
+                "title": "Whipped cream",
+                "measure": "1 tblsp ",
+                "ingredientId": "64f1d5c069d8333cf130fb38"
+              }
+            ],
+            "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
+            "updatedAt": "2024-02-16T19:28:22.859Z",
+            "favorite": ["65cf97bcb4481aee599a5df0"],
+            "popularity": 1
+          }
+        ]
+      },
+      "DrinkInfoRequest": {
+        "type": "http",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Drink ID"
+          }
+        },
+        "example": {
+          "id": "639b6de9ff77d221f190c51c"
+        }
+      },
+      "DrinkInfoResponse": {
+        "type": "object",
+        "properties": {
+          "recipe": {
+            "type": "object",
+            "properties": {
+              "_id": { "type": "string", "format": "ObjectId" },
+              "drink": { "type": "string" },
+              "drinkAlternate": { "type": "string" },
+              "tags": { "type": "string" },
+              "video": { "type": "string" },
+              "category": { "type": "string" },
+              "IBA": { "type": "string" },
+              "alcoholic": { "type": "string" },
+              "glass": { "type": "string" },
+              "description": { "type": "string" },
+              "instructions": { "type": "string" },
+              "instructionsES": { "type": "string" },
+              "instructionsDE": { "type": "string" },
+              "instructionsFR": { "type": "string" },
+              "instructionsIT": { "type": "string" },
+              "instructionsRU": { "type": "string" },
+              "instructionsPL": { "type": "string" },
+              "instructionsUK": { "type": "string" },
+              "drinkThumb": { "type": "string", "format": "link" },
+              "ingredients": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": { "type": "string" },
+                    "measure": { "type": "string" },
+                    "ingredientId": { "type": "string", "format": "ObjectId" }
+                  }
+                }
+              },
+              "shortDescription": { "type": "string" }
+            }
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": { "type": "string", "format": "ObjectId" },
+                "ingredientThumb": { "type": "string", "format": "link" },
+                "thumb-medium": { "type": "string", "format": "link" },
+                "thumb-small": { "type": "string", "format": "link" },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "type": { "type": "string" },
+                "alcohol": { "type": "string" },
+                "abv": { "type": "string" },
+                "flavour": { "type": "string" },
+                "country": { "type": "string" }
+              }
+            }
+          }
+        },
+        "example": {
+          "recipe": {
+            "favorite": [],
+            "popularity": 0,
+            "_id": "639b6de9ff77d221f190c51c",
+            "drink": "AT&T",
+            "drinkAlternate": "Sorry, not specified",
+            "tags": "Sorry, not specified",
+            "video": "Sorry, not specified",
+            "category": "Ordinary Drink",
+            "IBA": "Sorry, not specified",
+            "alcoholic": "Alcoholic",
+            "glass": "Highball Glass",
+            "description": "AT&T is a sweet and fruity cocktail that combines the flavors of amaretto liqueur and tequila. This unique blend creates a delightful balance of nutty sweetness and smooth tequila notes. Sip on an AT&T cocktail and let the sweet and fruity flavors transport you to a relaxing tropical getaway.",
+            "instructions": "Pour Vodka and Gin over ice, add Tonic and Stir",
+            "instructionsES": "Vierta el vodka y la ginebra sobre el hielo, agregue la tónica y revuelva.",
+            "instructionsDE": "Wodka und Gin über das Eis gießen, Tonic hinzufügen und umrühren.",
+            "instructionsFR": "Versez la Vodka et le Gin sur de la glace, ajoutez le Tonic et remuez",
+            "instructionsIT": "Versare la vodka e il gin sul ghiaccio, aggiungere l'acqua tonica e mescolare",
+            "instructionsRU": "Налейте водку и джин на лед, добавьте тоник и перемешайте.",
+            "instructionsPL": "Wlej Wódkę i Gin na lód, dodaj Tonik i Wymieszaj",
+            "instructionsUK": "Налийте горілку і джин на лід, додайте тонік і перемішайте",
+            "drinkThumb": "https://ftp.goit.study/img/drinkify/recipes/at-t.jpg",
+            "ingredients": [
+              {
+                "title": "Absolut Vodka",
+                "measure": "1 oz ",
+                "ingredientId": "64f1d5c969d8333cf130fbe5"
+              },
+              {
+                "title": "Gin",
+                "measure": "1 oz ",
+                "ingredientId": "64aebb7f82d96cc69e0eb4a6"
+              },
+              {
+                "title": "Tonic water",
+                "measure": "4 oz ",
+                "ingredientId": "64f1d5c969d8333cf130fbe8"
+              }
+            ],
+            "shortDescription": "A sweet and fruity cocktail with a mix of amaretto liqueur and tequila."
+          },
+          "ingredients": [
+            {
+              "_id": "64f1d5c969d8333cf130fbe5",
+              "ingredientThumb": "https://ftp.goit.study/img/drinkify/ingredients/Absolut_Vodka.png",
+              "thumb-medium": "https://ftp.goit.study/img/drinkify/ingredients/Absolut_Vodka-Medium.png",
+              "thumb-small": "https://ftp.goit.study/img/drinkify/ingredients/Absolut_Vodka-Small.png",
+              "title": "Absolut Vodka",
+              "description": "Absolut Vodka is a brand of vodka, produced near Åhus, in southern Sweden. Absolut is owned by French group Pernod Ricard; they bought Absolut for €5.63 billion in 2008 from the Swedish state. ... [truncated for brevity]",
+              "type": "Vodka",
+              "alcohol": "Yes",
+              "abv": "40",
+              "flavour": "Neutral",
+              "country": "Sweden"
+            },
+            {
+              "_id": "64aebb7f82d96cc69e0eb4a6",
+              "title": "Gin",
+              "ingredientThumb": "https://ftp.goit.study/img/drinkify/ingredients/Gin.png",
+              "thumb-medium": "https://ftp.goit.study/img/drinkify/ingredients/Gin-Medium.png",
+              "thumb-small": "https://ftp.goit.study/img/drinkify/ingredients/Gin-Small.png",
+              "abv": "40",
+              "alcohol": "Yes",
+              "description": "Gin is liquor which derives its predominant flavour from juniper berries (Juniperus communis). From its earliest origins in the Middle Ages, gin has evolved over the course of a millennium from a herbal medicine to an object of commerce in the spirits industry. Gin was developed on the basis of the older jenever, and became popular in Great Britain (particularly in London) when William of Orange, leader of the Dutch Republic, occupied the English, Scottish, and Irish thrones with his wife Mary. Gin is one of the broadest categories of spirits, represented by products of Globalorigins, styles, and flavour profiles that all revolve around juniper as a common ingredient.",
+              "type": "Gin",
+              "flavour": "English-style gin, citrus, juniper",
+              "country": "United States"
+            },
+            {
+              "_id": "64f1d5c969d8333cf130fbe8",
+              "ingredientThumb": "https://ftp.goit.study/img/drinkify/ingredients/Tonic_water.png",
+              "thumb-medium": "https://ftp.goit.study/img/drinkify/ingredients/Tonic_water-Medium.png",
+              "thumb-small": "https://ftp.goit.study/img/drinkify/ingredients/Tonic_water-Small.png",
+              "title": "Tonic water",
+              "description": "Tonic water (or Indian tonic water) is a carbonated soft drink in which quinine is dissolved. Originally used as a prophylactic against malaria, tonic water usually now has a significantly lower quinine content and is consumed for its distinctive bitter flavor, though it is nowadays also often sweetened. It is often used in mixed drinks, particularly in gin and tonic.",
+              "type": "Soft Drink",
+              "alcohol": "No",
+              "abv": "0",
+              "flavour": "Bitter",
+              "country": "Various"
+            }
+          ]
+        }
+      },
+      "DrinkToFavoriteRequest": {
+        "type": "http",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Drink ID"
+          }
+        },
+        "example": {
+          "id": "639b6de9ff77d221f190c51c"
+        }
+      },
+      "DrinkToFavoriteResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "userId": "string",
+            "description": "User ID",
+            "format": "ObjectId"
+          },
+          "drinkId": {
+            "type": "string",
+            "description": "Recipe ID",
+            "format": "ObjectId"
+          }
+        },
+        "example": {
+          "userId": "65cf97bcb4481aee599a5df0",
+          "drinkId": "639b6de9ff77d221f190c569"
+        }
+      },
+      "inline_response_401": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Description of the error."
+          }
+        }
       }
     },
     "securitySchemes": {
