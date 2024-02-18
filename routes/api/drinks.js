@@ -26,7 +26,7 @@ router.get("/own", wrapper(method.getMy));
 
 router.post("/favorite/add", wrapper(method.addFavorite));
 
-router.delete("/favorite/remove", wrapper(method.removeFavorite));
+router.delete("/favorite/remove/:id", wrapper(method.removeFavorite));
 
 router.get("/favorite", wrapper(method.getFavorite));
 

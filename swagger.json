@@ -3,7 +3,7 @@
   "info": {
     "title": "Drink Master API",
     "description": "API to interact with drinks and user information and details. \n\n**Функціональні можливості:**\n\nРеєстрація та авторизація користувачів\n\nОновлення даних користувачів\n\nФільтрація даних про коктейлі\n\nОтримання та видалення коктейлів\n\nСтворення власного коктейлю\n\nДодавання коктейлів до обраних\n\n**Стек технологій, що використовується у проекті:**\n\nNode.js - середовище виконання JavaScript на сервері\n\nExpress.js - фреймворк для розробки веб-додатків на Node.js\n\nMongoDB - NoSQL база даних\n\nMongoose - бібліотека для роботи з MongoDB у Node.js",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "servers": [
     {
@@ -129,7 +129,7 @@
         },
         "security": [
           {
-            "Bearer": []
+            "bearerAuth": []
           }
         ]
       }
@@ -434,40 +434,35 @@
             "in": "query",
             "schema": {
               "type": "string"
-            },
-            "value": ""
+            }
           },
           {
             "name": "category",
             "in": "query",
             "schema": {
               "type": "string"
-            },
-            "value": ""
+            }
           },
           {
             "name": "ingredients",
             "in": "query",
             "schema": {
               "type": "string"
-            },
-            "value": ""
+            }
           },
           {
             "name": "page",
             "in": "query",
             "schema": {
               "type": "number"
-            },
-            "value": "1"
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "schema": {
               "type": "number"
-            },
-            "value": "9"
+            }
           }
         ],
         "responses": {
@@ -495,7 +490,7 @@
         ]
       }
     },
-    "/drinks/{id}": {
+    "/drinks/{DrinkId}": {
       "get": {
         "tags": ["Drinks"],
         "summary": "Drink Information",
@@ -581,7 +576,7 @@
         ]
       }
     },
-    "/drinks/own/remove/{id}": {
+    "/drinks/own/remove/{DrinkId}": {
       "delete": {
         "tags": ["Drinks"],
         "summary": "Removing my drink",
@@ -689,24 +684,22 @@
         ]
       }
     },
-    "/drinks/favorite/remove/": {
+    "/drinks/favorite/remove/{DrinkId}": {
       "delete": {
         "tags": ["Drinks"],
         "summary": "Removing drink from Favorite",
-        "description": "Ендпоінт \"favorite/remove\" використовується для видалення коктейлю з обраного у користувача\n",
+        "description": "Ендпоінт \"favorite/remove\" використовується для видалення коктейлю з обраного у користувача\n# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
         "operationId": "DrinksController_deleteDrinkFromFavorite",
-        "parameters": [],
-        "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DrinkToFavoriteRequest"
-              }
+        "parameters": [
+          {
+            "name": "DrinkId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "200": {
             "description": "Drink returned\n\nОб`єкт з даними про коктейль та користувача\n",
@@ -874,16 +867,6 @@
           }
         ]
       },
-      "CurrentRequest": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "description": "User token"
-          }
-        },
-        "required": ["token"]
-      },
       "CurrentResponse": {
         "type": "object",
         "properties": {
@@ -911,7 +894,8 @@
             "description": "New user name"
           },
           "avatar": {
-            "type": "file",
+            "type": "string",
+            "format": "binary",
             "description": "New user avatar"
           }
         },
@@ -1411,38 +1395,6 @@
           }
         ]
       },
-      "DrinksSearchRequest": {
-        "type": "http",
-        "properties": {
-          "drink": {
-            "type": "string",
-            "description": "Drink for search"
-          },
-          "category": {
-            "type": "string",
-            "description": "Category for search"
-          },
-          "ingredient": {
-            "type": "string",
-            "description": "Ingredient for search"
-          },
-          "page": {
-            "type": "integer",
-            "description": "Page number"
-          },
-          "limit": {
-            "type": "integer",
-            "description": "Items limit"
-          }
-        },
-        "example": {
-          "drink": "Chocolate",
-          "category": "Coffee / Tea",
-          "ingredient": "Coffee",
-          "page": 1,
-          "limit": 9
-        }
-      },
       "DrinksSearchResponse": {
         "type": "array",
         "items": {
@@ -1591,18 +1543,6 @@
             "popularity": 1
           }
         ]
-      },
-      "DrinkInfoRequest": {
-        "type": "http",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Drink ID"
-          }
-        },
-        "example": {
-          "id": "639b6de9ff77d221f190c51c"
-        }
       },
       "DrinkInfoResponse": {
         "type": "object",
@@ -1843,12 +1783,17 @@
           "shortDescription": {
             "type": "string",
             "description": "Short description about the drink",
-            "example": "A gin and tonic is a hignball cocktail..."
+            "example": "A gin and tonic is a highball cocktail..."
           },
           "category": {
             "type": "string",
             "description": "Drink category",
             "example": "Cocktail"
+          },
+          "glass": {
+            "type": "string",
+            "description": "Type of glass for the drink",
+            "example": "Cocktail glass"
           },
           "alcoholic": {
             "type": "string",
@@ -1857,7 +1802,29 @@
           },
           "ingredients": {
             "type": "array",
-            "description": "Drink ingredients"
+            "description": "Drink ingredients",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Ingredient title"
+                },
+                "measure": {
+                  "type": "string",
+                  "description": "Measurement of the ingredient"
+                },
+                "ingredientId": {
+                  "type": "object",
+                  "properties": {
+                    "$oid": {
+                      "type": "string",
+                      "description": "MongoDB ObjectId"
+                    }
+                  }
+                }
+              }
+            }
           },
           "instructions": {
             "type": "string",
@@ -1901,7 +1868,7 @@
           "shortDescription": {
             "type": "string",
             "description": "Short description about the drink",
-            "example": "A gin and tonic is a hignball cocktail..."
+            "example": "A gin and tonic is a highball cocktail..."
           },
           "category": {
             "type": "string",
@@ -1915,7 +1882,29 @@
           },
           "ingredients": {
             "type": "array",
-            "description": "Drink ingredients"
+            "description": "Drink ingredients",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Ingredient title"
+                },
+                "measure": {
+                  "type": "string",
+                  "description": "Measurement of the ingredient"
+                },
+                "ingredientId": {
+                  "type": "object",
+                  "properties": {
+                    "$oid": {
+                      "type": "string",
+                      "description": "MongoDB ObjectId"
+                    }
+                  }
+                }
+              }
+            }
           },
           "instructions": {
             "type": "string",
@@ -1959,7 +1948,7 @@
         }
       },
       "DrinkToFavoriteRequest": {
-        "type": "http",
+        "type": "object",
         "properties": {
           "drinkId": {
             "type": "string",
@@ -1973,8 +1962,8 @@
       "DrinkToFavoriteResponse": {
         "type": "object",
         "properties": {
-          "name": {
-            "userId": "string",
+          "userId": {
+            "type": "string",
             "description": "User ID",
             "format": "ObjectId"
           },
@@ -2000,7 +1989,7 @@
       }
     },
     "securitySchemes": {
-      "Bearer": {
+      "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"

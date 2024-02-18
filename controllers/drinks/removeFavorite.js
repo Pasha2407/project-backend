@@ -1,9 +1,9 @@
 const recipeModel = require("../../models/schemas/recipe");
-const userModel = require("../../models/schemas/user");
 
 async function removeFavorite(req, res) {
-  const { id } = await userModel.findById(req.user.id);
-  const { drinkId } = req.body;
+  const drinkId = req.params.id;
+  const id = req.user.id;
+
   const recipe = await recipeModel.findById(drinkId);
   recipe.popularity -= 1;
 
