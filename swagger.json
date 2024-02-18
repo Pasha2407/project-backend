@@ -186,7 +186,7 @@
         "requestBody": {
           "description": "# Опис параметрів запиту:\n\n**name** - string, нове ім`я користувача. **Необов'язковий параметр**\n\n**avatar** - file, новий аватар користувача. **Необов'язковий параметр**\n",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateUserRequest"
               }
@@ -490,7 +490,7 @@
         ]
       }
     },
-    "/drinks/{DrinkId}": {
+    "/drinks/{drinkId}": {
       "get": {
         "tags": ["Drinks"],
         "summary": "Drink Information",
@@ -498,7 +498,7 @@
         "operationId": "DrinksController_getDrinkInfo",
         "parameters": [
           {
-            "name": "DrinkId",
+            "name": "drinkId",
             "in": "path",
             "required": true,
             "style": "simple",
@@ -576,7 +576,7 @@
         ]
       }
     },
-    "/drinks/own/remove/{DrinkId}": {
+    "/drinks/own/remove/{drinkId}": {
       "delete": {
         "tags": ["Drinks"],
         "summary": "Removing my drink",
@@ -584,7 +584,7 @@
         "operationId": "DrinksController_deleteMyDrink",
         "parameters": [
           {
-            "name": "DrinkId",
+            "name": "drinkId",
             "in": "path",
             "required": true,
             "style": "simple",
@@ -684,7 +684,7 @@
         ]
       }
     },
-    "/drinks/favorite/remove/{DrinkId}": {
+    "/drinks/favorite/remove/{drinkId}": {
       "delete": {
         "tags": ["Drinks"],
         "summary": "Removing drink from Favorite",
@@ -692,7 +692,7 @@
         "operationId": "DrinksController_deleteDrinkFromFavorite",
         "parameters": [
           {
-            "name": "DrinkId",
+            "name": "drinkId",
             "in": "path",
             "required": true,
             "schema": {
@@ -738,7 +738,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DrinksPopularResponse"
+                  "$ref": "#/components/schemas/DrinksFavoriteResponse"
                 }
               }
             }
@@ -788,36 +788,31 @@
         }
       },
       "RegistrationResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "User name",
-              "example": "Will Smith"
-            },
-            "avatarURL": {
-              "type": "string",
-              "description": "User avatar is created using the gravatar package",
-              "format": "link"
-            },
-            "token": {
-              "type": "string",
-              "description": "User token",
-              "format": "string"
-            }
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "Will Smith"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User avatar is created using the gravatar package",
+            "format": "link"
+          },
+          "token": {
+            "type": "string",
+            "description": "User token",
+            "format": "string"
           }
         },
-        "example": [
-          {
-            "user": {
-              "name": "Alex",
-              "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
-            },
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
-          }
-        ]
+        "example": {
+          "user": {
+            "name": "Alex",
+            "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
+          },
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
+        }
       },
       "LoginRequest": {
         "required": ["email", "password"],
@@ -836,36 +831,36 @@
         }
       },
       "LoginResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "User name",
-              "example": "Will Smith"
-            },
-            "avatarURL": {
-              "type": "string",
-              "description": "User avatar is created using the gravatar package",
-              "format": "link"
-            },
-            "token": {
-              "type": "string",
-              "description": "User token",
-              "format": "string"
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User name",
+                "example": "Will Smith"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User avatar is created using the gravatar package",
+                "format": "link"
+              }
             }
+          },
+          "token": {
+            "type": "string",
+            "description": "User token",
+            "format": "string"
           }
         },
-        "example": [
-          {
-            "user": {
-              "name": "Alex",
-              "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
-            },
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
-          }
-        ]
+        "example": {
+          "user": {
+            "name": "Alex",
+            "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
+          },
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
+        }
       },
       "CurrentResponse": {
         "type": "object",
@@ -891,17 +886,13 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "New user name"
+            "description": "User's Name"
           },
           "avatar": {
             "type": "string",
             "format": "binary",
-            "description": "New user avatar"
+            "description": "User's avatar file"
           }
-        },
-        "example": {
-          "name": "Gal Gadot",
-          "avatar": "Put file"
         }
       },
       "UpdateUserResponse": {
@@ -1976,6 +1967,163 @@
         "example": {
           "userId": "65cf97bcb4481aee599a5df0",
           "drinkId": "639b6de9ff77d221f190c569"
+        }
+      },
+      "DrinksFavoriteResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID",
+            "format": "ObjectId"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "format": "ObjectId"
+                },
+                "drink": {
+                  "type": "string"
+                },
+                "drinkAlternate": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "string"
+                },
+                "video": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "IBA": {
+                  "type": "string"
+                },
+                "alcoholic": {
+                  "type": "string"
+                },
+                "glass": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "instructionsES": {
+                  "type": "string"
+                },
+                "instructionsDE": {
+                  "type": "string"
+                },
+                "instructionsFR": {
+                  "type": "string"
+                },
+                "instructionsIT": {
+                  "type": "string"
+                },
+                "instructionsRU": {
+                  "type": "string"
+                },
+                "instructionsPL": {
+                  "type": "string"
+                },
+                "instructionsUK": {
+                  "type": "string"
+                },
+                "drinkThumb": {
+                  "type": "string",
+                  "format": "link"
+                },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "measure": {
+                        "type": "string"
+                      },
+                      "ingredientId": {
+                        "type": "string",
+                        "format": "ObjectId"
+                      }
+                    }
+                  }
+                },
+                "shortDescription": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "favorite": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "popularity": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "userId": "65d0ef3a2dcbb61cef81ce15",
+          "data": [
+            {
+              "_id": "639b6de9ff77d221f190c51c",
+              "drink": "AT&T",
+              "drinkAlternate": "Sorry, not specified",
+              "tags": "Sorry, not specified",
+              "video": "Sorry, not specified",
+              "category": "Ordinary Drink",
+              "IBA": "Sorry, not specified",
+              "alcoholic": "Alcoholic",
+              "glass": "Highball Glass",
+              "description": "AT&T is a sweet and fruity cocktail that combines the flavors of amaretto liqueur and tequila. This unique blend creates a delightful balance of nutty sweetness and smooth tequila notes. Sip on an AT&T cocktail and let the sweet and fruity flavors transport you to a relaxing tropical getaway.",
+              "instructions": "Pour Vodka and Gin over ice, add Tonic and Stir",
+              "instructionsES": "Vierta el vodka y la ginebra sobre el hielo, agregue la tónica y revuelva.",
+              "instructionsDE": "Wodka und Gin über das Eis gießen, Tonic hinzufügen und umrühren.",
+              "instructionsFR": "Versez la Vodka et le Gin sur de la glace, ajoutez le Tonic et remuez",
+              "instructionsIT": "Versare la vodka e il gin sul ghiaccio, aggiungere l'acqua tonica e mescolare",
+              "instructionsRU": "Налейте водку и джин на лед, добавьте тоник и перемешайте.",
+              "instructionsPL": "Wlej Wódkę i Gin na lód, dodaj Tonik i Wymieszaj",
+              "instructionsUK": "Налийте горілку і джин на лід, додайте тонік і перемішайте",
+              "drinkThumb": "https://ftp.goit.study/img/drinkify/recipes/at-t.jpg",
+              "ingredients": [
+                {
+                  "title": "Absolut Vodka",
+                  "measure": "1 oz ",
+                  "ingredientId": "64f1d5c969d8333cf130fbe5"
+                },
+                {
+                  "title": "Gin",
+                  "measure": "1 oz ",
+                  "ingredientId": "64aebb7f82d96cc69e0eb4a6"
+                },
+                {
+                  "title": "Tonic water",
+                  "measure": "4 oz ",
+                  "ingredientId": "64f1d5c969d8333cf130fbe8"
+                }
+              ],
+              "shortDescription": "A sweet and fruity cocktail with a mix of amaretto liqueur and tequila.",
+              "favorite": ["65d0ef3a2dcbb61cef81ce15"],
+              "popularity": 1,
+              "updatedAt": "2024-02-18T14:31:01.427Z"
+            }
+          ]
         }
       },
       "inline_response_401": {

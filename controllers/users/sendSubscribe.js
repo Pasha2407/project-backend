@@ -2,10 +2,14 @@ const userModel = require("../../models/schemas/user");
 const { newError, sendMail } = require("../../helpers");
 
 async function sendSubscribe(req, res) {
-  const { email, name, id } = await userModel.findById(req.user.id);
+  const { email, name, id, subscribed } = await userModel.findById(req.user.id);
 
   if (email !== req.body.email) {
     throw newError(403, "Enter own email");
+  }
+
+  if (subscribed) {
+    throw newError(403, "You already subscribed");
   }
 
   const subscribedEmail = {
