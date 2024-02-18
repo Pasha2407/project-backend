@@ -5,7 +5,7 @@ const userModel = require("../../models/schemas/user");
 
 async function updateUser(req, res) {
   const { name } = req.body;
-  const { id } = await userModel.findById(req.user.id);
+  const id = req.user.id;
 
   if (req.file) {
     const { path } = req.file;

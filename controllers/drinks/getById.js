@@ -6,7 +6,9 @@ const { newError } = require("../../helpers");
 async function getById(req, res) {
   const { id } = req.params;
   const { adult } = await userModel.findById(req.user.id);
-  if (!adult) {
+  const { alcoholic } = await recipeModel.findById(id);
+
+  if (!adult && alcoholic === "Alcoholic") {
     throw newError(403, "Not Allowed");
   }
   const recipe = await recipeModel.findById(id);

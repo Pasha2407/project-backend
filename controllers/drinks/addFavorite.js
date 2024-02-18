@@ -1,8 +1,7 @@
 const recipeModel = require("../../models/schemas/recipe");
-const userModel = require("../../models/schemas/user");
 
 async function addFavorite(req, res) {
-  const { id } = await userModel.findById(req.user.id);
+  const id = req.user.id;
   const { drinkId } = req.body;
 
   const recipe = await recipeModel.findById(drinkId);
