@@ -31,9 +31,7 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User registration",
         "operationId": "AuthController_signup",
         "parameters": [],
@@ -73,9 +71,7 @@
     },
     "/auth/signin": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Sign in existing user",
         "operationId": "AuthController_signin",
         "parameters": [],
@@ -115,9 +111,7 @@
     },
     "/auth/signout": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Signs out user",
         "description": "Ендпоінт логауту - це механізм виходу з системи, який припиняє дію сесії користувача та знищує токен доступу, що був виданий при попередній аутентифікації.\n\nОпис: Коли користувач натискає кнопку вийти з системи, він робить запит на URL /auth/signout з валідним токеном у заголовку Authorization. Сервер перевіряє валідність токена, якщо токен є дійсним, то сесія користувача закривається, токен видаляється і користувач повертається на сторінку входу в систему.\n",
         "operationId": "AuthController_signout",
@@ -142,9 +136,7 @@
     },
     "/users/current": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "summary": "Get current user info",
         "description": "Ендпоінт \"current\" використовується для отримання інформації про поточного авторизованого користувача. Цей ендпоінт повертає об'єкт, який містить інформацію про користувача, таку як електронна пошта та ідентифікатор користувача.\n",
         "operationId": "UsersController_LoggedUser",
@@ -186,9 +178,7 @@
     },
     "/users/update": {
       "patch": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "summary": "Update user info",
         "description": "Ендпоінт \"update\" використовується для оновлення імені та аватара користувача. Можливе оновлення обох значень або тільки одного з двох. Цей ендпоінт повертає об'єкт, який містить інформацію про користувача, таку як нове ім`я та посилання на новий аватар, завантажений на сервер Cloudinary.\n",
         "operationId": "UsersController_patchUpdateUser",
@@ -231,9 +221,7 @@
     },
     "/users/subscribe": {
       "post": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "summary": "Subscribe for updates",
         "description": "Ендпоінт \"subscribe\" використовується для отримання підтвердження на підписку від користувача шляхом введення пошти, вказаної при реєстрації. У випадку розбіжності пошти у підписці буде відмовлено.\n",
         "operationId": "UsersController_postSubscribeUser",
@@ -279,9 +267,7 @@
     },
     "/filters/categories": {
       "get": {
-        "tags": [
-          "Filter"
-        ],
+        "tags": ["Filter"],
         "summary": "Drinks categories list",
         "description": "Ендпоінт \"categories\" використовується для отримання списку категорій коктейлів, відсортованих за алфавітом\n",
         "operationId": "FilterController_getCategories",
@@ -313,9 +299,7 @@
     },
     "/filters/ingredients": {
       "get": {
-        "tags": [
-          "Filter"
-        ],
+        "tags": ["Filter"],
         "summary": "Drinks ingredients list",
         "description": "Ендпоінт \"ingredients\" використовується для отримання списку інгредієнтів коктейлів, відсортованих за алфавітом\n",
         "operationId": "FilterController_getIngredients",
@@ -347,9 +331,7 @@
     },
     "/filters/glasses": {
       "get": {
-        "tags": [
-          "Filter"
-        ],
+        "tags": ["Filter"],
         "summary": "Drinks glasses list",
         "description": "Ендпоінт \"glasses\" використовується для отримання списку тари для сервірування напоїв, відсортованих за алфавітом\n",
         "operationId": "FilterController_getGlasses",
@@ -380,9 +362,7 @@
     },
     "/drinks/mainpage": {
       "get": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Drinks list for MainPage",
         "description": "Ендпоінт \"mainpage\" використовується для отримання списку коктейлів з чотирьох зазначених категорій: Ordinary Drink, Cocktail, Shake та Other/Unknown. Коктейлі відсортовані по даті додавання в систему. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
         "operationId": "DrinksController_getMainpage",
@@ -413,9 +393,7 @@
     },
     "/drinks/popular": {
       "get": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Drinks sorted by popularity",
         "description": "Ендпоінт \"popular\" використовується для отримання списку коктейлів, відсортованих на основі кількості додавань до обраного користувачами. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
         "operationId": "DrinksController_getPopular",
@@ -446,9 +424,7 @@
     },
     "/drinks/search": {
       "get": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Drinks search",
         "description": "Ендпоінт \"search\" використовується для пошуку коктейлів обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n\n# Опис параметрів запиту:\n\n**drink** - string, назва коктейлю для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
         "operationId": "DrinksController_getSearch",
@@ -521,9 +497,7 @@
     },
     "/drinks/{id}": {
       "get": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Drink Information",
         "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про коктейль та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n",
         "operationId": "DrinksController_getDrinkInfo",
@@ -566,9 +540,7 @@
     },
     "/drinks/own/add/": {
       "post": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Adding my drink",
         "description": "Ендпоінт \"own/add\" використовується для додавання власного коктейлю. Цей ендпоінт повертає об'єкт, який містить інформацію про коктейль, таку як загальна інформація та посилання на новий аватар, завантажений на сервер Cloudinary.\n",
         "operationId": "DrinksController_postMyDrink",
@@ -611,9 +583,7 @@
     },
     "/drinks/own/remove/{id}": {
       "delete": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Removing my drink",
         "description": "Ендпоінт \"own/remove\" використовується для видалення власного коктейлю по ід\n",
         "operationId": "DrinksController_deleteMyDrink",
@@ -649,9 +619,7 @@
     },
     "/drinks/own/": {
       "get": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "My Drinks",
         "description": "Ендпоінт \"own\" використовується для відображення списку власних коктейлів\n",
         "operationId": "DrinksController_getMyDrinks",
@@ -680,15 +648,13 @@
     },
     "/drinks/favorite/add/": {
       "post": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Adding drink to Favorite",
         "description": "Ендпоінт \"favorite/add\" використовується для додавання коктейлю в обране користувачеві\n",
         "operationId": "DrinksController_postDrinkFavorite",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
           "content": {
             "application/json": {
               "schema": {
@@ -725,15 +691,13 @@
     },
     "/drinks/favorite/remove/": {
       "delete": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Removing drink from Favorite",
         "description": "Ендпоінт \"favorite/remove\" використовується для видалення коктейлю з обраного у користувача\n",
         "operationId": "DrinksController_deleteDrinkFromFavorite",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**id** - string, ідентифікатор коктейлю.",
+          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
           "content": {
             "application/json": {
               "schema": {
@@ -770,9 +734,7 @@
     },
     "/drinks/favorite/": {
       "get": {
-        "tags": [
-          "Drinks"
-        ],
+        "tags": ["Drinks"],
         "summary": "Favorite drinks",
         "description": "Ендпоінт \"favorite\" використовується для відображення списку коктейлів з обраного у користувача\n",
         "operationId": "DrinksController_getFavoriteDrinks",
@@ -806,12 +768,7 @@
   "components": {
     "schemas": {
       "RegistrationRequest": {
-        "required": [
-          "name",
-          "dateOfBirth",
-          "email",
-          "password"
-        ],
+        "required": ["name", "dateOfBirth", "email", "password"],
         "type": "object",
         "properties": {
           "name": {
@@ -870,10 +827,7 @@
         ]
       },
       "LoginRequest": {
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "type": "object",
         "properties": {
           "email": {
@@ -928,9 +882,7 @@
             "description": "User token"
           }
         },
-        "required": [
-          "token"
-        ]
+        "required": ["token"]
       },
       "CurrentResponse": {
         "type": "object",
@@ -1029,13 +981,7 @@
         "items": {
           "type": "string"
         },
-        "example": [
-          "Beer",
-          "Cocktail",
-          "Cocoa",
-          "Coffee / Tea",
-          "..."
-        ]
+        "example": ["Beer", "Cocktail", "Cocoa", "Coffee / Tea", "..."]
       },
       "FilterIngredientsResponse": {
         "type": "array",
@@ -1460,9 +1406,7 @@
             ],
             "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
             "updatedAt": "2024-02-16T19:28:22.859Z",
-            "favorite": [
-              "65cf97bcb4481aee599a5df0"
-            ],
+            "favorite": ["65cf97bcb4481aee599a5df0"],
             "popularity": 1
           }
         ]
@@ -1643,9 +1587,7 @@
             ],
             "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
             "updatedAt": "2024-02-16T19:28:22.859Z",
-            "favorite": [
-              "65cf97bcb4481aee599a5df0"
-            ],
+            "favorite": ["65cf97bcb4481aee599a5df0"],
             "popularity": 1
           }
         ]
@@ -2019,13 +1961,13 @@
       "DrinkToFavoriteRequest": {
         "type": "http",
         "properties": {
-          "id": {
+          "drinkId": {
             "type": "string",
             "description": "Drink ID"
           }
         },
         "example": {
-          "id": "639b6de9ff77d221f190c51c"
+          "drinkId": "639b6de9ff77d221f190c51c"
         }
       },
       "DrinkToFavoriteResponse": {
