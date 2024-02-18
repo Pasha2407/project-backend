@@ -16,37 +16,9 @@ async function addMy(req, res) {
     instructions,
   } = req.body;
 
-  const { path } = req.file;
-  const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
+  const id = req.user.id;
 
-  cloudinary.config({
-    cloud_name: CLOUD_NAME,
-    api_key: API_KEY,
-    api_secret: API_SECRET,
-  });
-
-  const uploadImage = async (path) => {
-    const options = {
-      use_filename: true,
-      unique_filename: true,
-      overwrite: true,
-      width: 400,
-      height: 400,
-      crop: "fill",
-    };
-
-    try {
-      const result = await cloudinary.uploader.upload(path, options);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const uploadedAvatar = await uploadImage(path);
-  await fs.unlink(path);
-
-  const { adult } = await userModel.findById(req.user.id);
+  const { adult } = await userModel.findById(id);
   let alc = "";
   if (adult) alc = alcoholic;
   else alc = "Non alcoholic";
@@ -64,7 +36,7 @@ async function addMy(req, res) {
 
   const newRecipe = {
     drink,
-    drinkThumb: uploadedAvatar.url,
+    drinkThumb: '',
     shortDescription,
     category,
     glass,
@@ -73,9 +45,51 @@ async function addMy(req, res) {
       (ingredient) => ingredient.ingredientId
     ),
     instructions,
-    owner: req.user.id,
+    owner: id,
   };
-  const result = await recipeModel.create(newRecipe);
-  res.status(201).json(result);
+  const resultRepice = await recipeModel.create(newRecipe);
+  await resultRepice.save();
+
+  if (req.file) {
+    const { path } = req.file;
+    const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
+
+    cloudinary.config({
+      cloud_name: CLOUD_NAME,
+      api_key: API_KEY,
+      api_secret: API_SECRET,
+    });
+
+    const uploadImage = async (path) => {
+      const options = {
+        use_filename: true,
+        unique_filename: true,
+        overwrite: true,
+        width: 400,
+        height: 400,
+        crop: "fill",
+      };
+
+      try {
+        const result = await cloudinary.uploader.upload(path, options);
+        return result;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const uploadedAvatar = await uploadImage(path);
+    await fs.unlink(path);
+
+    if (uploadedAvatar) {
+      const updateResult = await recipeModel.findByIdAndUpdate(
+        resultRepice._id,
+        { drinkThumb: uploadedAvatar.url },
+        { new: true });
+
+      res.status(201).json(updateResult);
+    }
+  }
+  else res.status(201).json(resultRepice);
 }
 module.exports = addMy;
