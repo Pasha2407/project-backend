@@ -19,7 +19,7 @@ function validateToken(req, res, next) {
     }
 
     const user = await userModel.findById(decode.id);
-    if (user === null) {
+    if (!user) {
       return next(newError(401));
     }
     if (user.token !== token) {
@@ -28,7 +28,12 @@ function validateToken(req, res, next) {
 
     req.user = {
       id: decode.id,
+      name: user.name,
+      dateOfBirth: user.dateOfBirth,
       email: user.email,
+      avatarURL: user.avatarURL,
+      adult: user.adult,
+      subscribed: user.subscribed
     };
 
     next();
