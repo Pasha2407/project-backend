@@ -541,7 +541,7 @@
         "operationId": "DrinksController_postMyDrink",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n **drinkpicture** - file, зображення коктейлю. \n\n**drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів.\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
+          "description": "# Опис параметрів запиту:\n\n **drinkpicture** - file, зображення коктейлю. \n\n**drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів. Приклад передачі: [{\"ingredientId\": \"64aebb7f82d96cc69e0eb4a7\",\"title\": \"Dark rum\",\"measure\": \"1 1/2 oz\"}\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -976,14 +976,27 @@
       "FilterIngredientsResponse": {
         "type": "array",
         "items": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "ingredientId": {
+              "type": "string",
+              "description": "The unique identifier for the ingredient"
+            },
+            "title": {
+              "type": "string",
+              "description": "The title of the ingredient"
+            }
+          }
         },
         "example": [
-          "151 proof rum",
-          "7-Up",
-          "Absinthe",
-          "Absolut Citron",
-          "..."
+          {
+            "ingredientId": "64f1d5e369d8333cf130fd88",
+            "title": "Bacardi Limon"
+          },
+          {
+            "ingredientId": "64f1d62669d8333cf131012c",
+            "title": "Daiquiri mix"
+          }
         ]
       },
       "FilterGlassesResponse": {
@@ -1813,30 +1826,8 @@
             "example": "Alcoholic"
           },
           "ingredients": {
-            "type": "array",
-            "description": "Drink ingredients",
-            "items": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "description": "Ingredient title"
-                },
-                "measure": {
-                  "type": "string",
-                  "description": "Measurement of the ingredient"
-                },
-                "ingredientId": {
-                  "type": "object",
-                  "properties": {
-                    "$oid": {
-                      "type": "string",
-                      "description": "MongoDB ObjectId"
-                    }
-                  }
-                }
-              }
-            }
+            "type": "string",
+            "description": "Drink ingredients"
           },
           "instructions": {
             "type": "string",
@@ -1854,16 +1845,12 @@
             {
               "title": "Dark rum",
               "measure": "1 1/2 oz ",
-              "ingredientId": {
-                "$oid": "64aebb7f82d96cc69e0eb4a7"
-              }
+              "ingredientId": "64aebb7f82d96cc69e0eb4a7"
             },
             {
               "title": "Kahlua",
               "measure": "1/2 oz ",
-              "ingredientId": {
-                "$oid": "64aebb7f82d96cc69e0eb4bd"
-              }
+              "ingredientId": "64aebb7f82d96cc69e0eb4bd"
             }
           ],
           "instructions": "In a shaker half-filled with ice cubes..."
