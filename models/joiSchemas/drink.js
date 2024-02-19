@@ -49,17 +49,6 @@ const glassesList = [
 
 const alcoholicList = ["Alcoholic", "Non alcoholic"];
 
-const ingredientsSchema = Joi.object({
-  title: Joi.string().required().messages({
-    "any.required": "missing required title field",
-    "string.base": "field title must be a string",
-  }),
-  measure: Joi.string().required().messages({
-    "any.required": "missing required measure field",
-    "string.base": "field measure must be a string",
-  }),
-});
-
 const addMyJoiSchema = Joi.object({
   drink: Joi.string().required().messages({
     "any.required": "missing required drink field",
@@ -93,7 +82,7 @@ const addMyJoiSchema = Joi.object({
       "string.base": "field alcoholic must be a string",
       "valid.base": "field alcoholic must be Alcoholic or Non alcoholic",
     }),
-  ingredients: Joi.array().items(ingredientsSchema).required().messages({
+  ingredients: Joi.string().required().messages({
     "any.required": "missing required ingredients field",
     "string.base": "field ingredients must be a array",
   }),

@@ -2,7 +2,6 @@ const cloudinary = require("cloudinary").v2;
 const fs = require("fs/promises");
 
 const recipeModel = require("../../models/schemas/recipe");
-const ingredientModal = require("../../models/schemas/ingredient");
 
 async function addMy(req, res) {
   const {
@@ -22,16 +21,7 @@ async function addMy(req, res) {
   if (adult) alc = alcoholic;
   else alc = "Non alcoholic";
 
-  const mappedIngredients = await Promise.all(
-    ingredients.map(async (item) => {
-      const ingredient = await ingredientModal.findOne({ title: item.title });
-      return {
-        title: item.title,
-        measure: item.measure,
-        ingredientId: ingredient ? ingredient._id : null,
-      };
-    })
-  );
+  const parsedIngredients = JSON.parse(ingredients);
 
   const newRecipe = {
     drink,
@@ -40,9 +30,7 @@ async function addMy(req, res) {
     category,
     glass,
     alcoholic: alc,
-    ingredients: mappedIngredients.filter(
-      (ingredient) => ingredient.ingredientId
-    ),
+    ingredients: parsedIngredients,
     instructions,
     owner: id,
   };
