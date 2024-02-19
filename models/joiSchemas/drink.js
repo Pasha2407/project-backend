@@ -1,45 +1,106 @@
-const Joi = require('joi')
+const Joi = require("joi");
+
+const categoriesList = [
+  "Beer",
+  "Cocktail",
+  "Cocoa",
+  "Coffee / Tea",
+  "Homemade Liqueur",
+  "Ordinary Drink",
+  "Other/Unknown",
+  "Punch / Party Drink",
+  "Shake",
+  "Shot",
+  "Soft Drink",
+];
+const glassesList = [
+  "Balloon Glass",
+  "Beer Glass",
+  "Beer Mug",
+  "Beer Pilsner",
+  "Brandy Snifter",
+  "Champagne Flute",
+  "Cocktail Glass",
+  "Coffee Mug",
+  "Collins Glass",
+  "Copper Mug",
+  "Cordial Glass",
+  "Coupe Glass",
+  "Highball Glass",
+  "Hurricane glass",
+  "Irish Coffee Cup",
+  "Jar",
+  "Margarita Glass",
+  "Margarita/Coupette glass",
+  "Martini Glass",
+  "Mason Jar",
+  "Nick and Nora Glass",
+  "Old-Fashioned Glass",
+  "Pint Glass",
+  "Pitcher",
+  "Pousse Cafe Glass",
+  "Punch Bowl",
+  "Shot Glass",
+  "Whiskey Glass",
+  "Whiskey Sour Glass",
+  "White Wine Glass",
+  "Wine Glass",
+];
+
+const alcoholicList = ["Alcoholic", "Non alcoholic"];
 
 const ingredientsSchema = Joi.object({
-    title: Joi.string().required().messages({
-        'any.required': 'missing required title field',
-        'string.base': 'field title must be a string'
-    }),
-    measure: Joi.string().required().messages({
-        'any.required': 'missing required measure field',
-        'string.base': 'field measure must be a string'
-    }),
+  title: Joi.string().required().messages({
+    "any.required": "missing required title field",
+    "string.base": "field title must be a string",
+  }),
+  measure: Joi.string().required().messages({
+    "any.required": "missing required measure field",
+    "string.base": "field measure must be a string",
+  }),
 });
 
 const addMyJoiSchema = Joi.object({
-    drink: Joi.string().required().messages({
-        'any.required': 'missing required drink field',
-        'string.base': 'field drink must be a string'
+  drink: Joi.string().required().messages({
+    "any.required": "missing required drink field",
+    "string.base": "field drink must be a string",
+  }),
+  shortDescription: Joi.string().required().messages({
+    "any.required": "missing required shortDescription field",
+    "string.base": "field shortDescription must be a string",
+  }),
+  category: Joi.string()
+    .valid(...categoriesList)
+    .required()
+    .messages({
+      "any.required": "missing required category field",
+      "string.base": "field category must be a string",
+      "valid.base": "field category must be one of: " + categoriesList,
     }),
-    shortDescription: Joi.string().required().messages({
-        'any.required': 'missing required shortDescription field',
-        'string.base': 'field shortDescription must be a string'
+  glass: Joi.string()
+    .valid(...glassesList)
+    .required()
+    .messages({
+      "any.required": "missing required glass field",
+      "string.base": "field glass must be a string",
+      "valid.base": "field glass must be one of: " + glassesList,
     }),
-    category: Joi.string().required().messages({
-        'any.required': 'missing required category field',
-        'string.base': 'field category must be a string'
+  alcoholic: Joi.string()
+    .valid(...alcoholicList)
+    .required()
+    .messages({
+      "any.required": "missing required alcoholic field",
+      "string.base": "field alcoholic must be a string",
+      "valid.base": "field alcoholic must be Alcoholic or Non alcoholic",
     }),
-    glass: Joi.string().required().messages({
-        'any.required': 'missing required glass field',
-        'string.base': 'field glass must be a string'
-    }),
-    alcoholic: Joi.string().required().messages({
-        'any.required': 'missing required alcoholic field',
-        'string.base': 'field alcoholic must be a string'
-    }),
-    ingredients: Joi.array().items(ingredientsSchema).required().messages({
-        'any.required': 'missing required ingredients field',
-        'string.base': 'field ingredients must be a array'
-    }),
-    instructions: Joi.string().required().messages({
-        'any.required': 'missing required instructions field',
-        'string.base': 'field instructions must be a string'
-    }),
-})
+  ingredients: Joi.array().items(ingredientsSchema).required().messages({
+    "any.required": "missing required ingredients field",
+    "string.base": "field ingredients must be a array",
+  }),
+  instructions: Joi.string().required().messages({
+    "any.required": "missing required instructions field",
+    "string.base": "field instructions must be a string",
+  }),
+});
 
-module.exports = { addMyJoiSchema }
+module.exports = { addMyJoiSchema };

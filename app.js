@@ -18,11 +18,10 @@ const filtersRouter = require("./routes/api/filters");
 
 const { validateToken } = require("./middlewares/index");
 
-app.use('/api/auth', authRouter)
-app.use('/api/users', validateToken, usersRouter)
-app.use('/api/drinks', validateToken, drinksRouter)
-app.use('/api/filters', validateToken, filtersRouter)
-
+app.use("/api/auth", authRouter);
+app.use("/api/users", validateToken, usersRouter);
+app.use("/api/drinks", validateToken, drinksRouter);
+app.use("/api/filters", validateToken, filtersRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -30,21 +29,9 @@ app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
 
-const errorResponses = {
-  400: { status: 400 },
-  401: { status: 401 },
-  403: { status: 403 },
-  404: { status: 404 },
-  409: { status: 409 },
-};
-
 app.use((err, req, res, next) => {
-  if (err instanceof Error && err.status && errorResponses[err.status]) {
-    const { status } = errorResponses[err.status];
-    res.status(status).json({ message: err.message });
-  } else {
-    res.status(500).json({ message: "Internal Server Error" });
-  }
+  const { status = 500, message = "Server error" } = err;
+  res.status(status).json({ message });
 });
 
 module.exports = app;

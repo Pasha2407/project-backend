@@ -1,8 +1,7 @@
 const recipeModel = require("../../models/schemas/recipe");
-const userModel = require("../../models/schemas/user");
 
 async function getMainPage(req, res) {
-  const { adult } = await userModel.findById(req.user.id);
+  const adult = req.user.adult;
   const { limit = 3 } = req.query;
   let filter = {};
 

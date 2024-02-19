@@ -7,7 +7,7 @@ const recipeSchema = new mongoose.Schema(
     },
     drinkAlternate: {
       type: String,
-      default: 'Sorry, not specified'
+      default: "Sorry, not specified",
     },
     tags: {
       type: String,
@@ -57,19 +57,20 @@ const recipeSchema = new mongoose.Schema(
     drinkThumb: {
       type: String,
     },
-    ingredients: {
-      type: Array,
-      title: {
-        type: String,
+    ingredients: [
+      {
+        title: {
+          type: String,
+        },
+        measure: {
+          type: String,
+        },
+        ingredientId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "ingredient",
+        },
       },
-      measure: {
-        type: String,
-      },
-      ingredientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "ingredient",
-      },
-    },
+    ],
     favorite: {
       type: Array,
     },

@@ -2,7 +2,6 @@ const cloudinary = require("cloudinary").v2;
 const fs = require("fs/promises");
 
 const recipeModel = require("../../models/schemas/recipe");
-const userModel = require("../../models/schemas/user");
 const ingredientModal = require("../../models/schemas/ingredient");
 
 async function addMy(req, res) {
@@ -17,8 +16,8 @@ async function addMy(req, res) {
   } = req.body;
 
   const id = req.user.id;
+  const adult = req.user.adult;
 
-  const { adult } = await userModel.findById(id);
   let alc = "";
   if (adult) alc = alcoholic;
   else alc = "Non alcoholic";
@@ -36,7 +35,7 @@ async function addMy(req, res) {
 
   const newRecipe = {
     drink,
-    drinkThumb: '',
+    drinkThumb: "",
     shortDescription,
     category,
     glass,
@@ -85,11 +84,11 @@ async function addMy(req, res) {
       const updateResult = await recipeModel.findByIdAndUpdate(
         resultRepice._id,
         { drinkThumb: uploadedAvatar.url },
-        { new: true });
+        { new: true }
+      );
 
       res.status(201).json(updateResult);
     }
-  }
-  else res.status(201).json(resultRepice);
+  } else res.status(201).json(resultRepice);
 }
 module.exports = addMy;
