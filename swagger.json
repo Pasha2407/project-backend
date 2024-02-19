@@ -1912,38 +1912,30 @@
           }
         },
         "example": {
-          "_id": {
-            "$oid": "65d07c6e3cd1b43ba930dcc2"
-          },
-          "drink": "Quentin",
+          "_id": "65d3d698a69b484fb9794927",
+          "drink": "New Drink Name",
           "drinkAlternate": "Sorry, not specified",
-          "category": "Ordinary Drink",
+          "category": "Cocktail",
           "alcoholic": "Alcoholic",
-          "glass": "Cocktail glass",
-          "instructions": "In a shaker half-filled with ice cubes...",
-          "drinkThumb": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708162155/IMG_0230_t2gfrb.jpg",
+          "glass": "Beer Mug",
+          "instructions": "Drink instructions",
+          "drinkThumb": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708381849/Gal_Gadot_cq7gi8.jpg",
           "ingredients": [
             {
               "title": "Dark rum",
-              "measure": "1 1/2 oz ",
-              "ingredientId": {
-                "$oid": "64aebb7f82d96cc69e0eb4a7"
-              }
+              "measure": "1 1/2 oz",
+              "ingredientId": "64aebb7f82d96cc69e0eb4a7"
             },
             {
               "title": "Kahlua",
-              "measure": "1/2 oz ",
-              "ingredientId": {
-                "$oid": "64aebb7f82d96cc69e0eb4bd"
-              }
+              "measure": "1/2 oz",
+              "ingredientId": "64aebb7f82d96cc69e0eb4bd"
             }
           ],
           "favorite": [],
           "popularity": 0,
-          "shortDescription": "A refreshing and citrusy cocktail with...",
-          "owner": {
-            "$oid": "65d0797eb4ab8be89dd0caf1"
-          }
+          "shortDescription": "Short Description",
+          "owner": "65d111dcbe675a8bc4789e18"
         }
       },
       "DrinkToFavoriteRequest": {
