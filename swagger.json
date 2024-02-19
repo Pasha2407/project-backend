@@ -541,9 +541,9 @@
         "operationId": "DrinksController_postMyDrink",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n **drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів.\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
+          "description": "# Опис параметрів запиту:\n\n **drinkpicture** - file, зображення коктейлю. \n\n**drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів.\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/MyDrinkRequest"
               }
@@ -865,20 +865,35 @@
       "CurrentResponse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "User id",
+            "format": "ObjectId"
+          },
+          "name": {
+            "type": "string",
+            "description": "User name"
+          },
           "email": {
             "type": "string",
             "description": "User email",
             "format": "email"
           },
-          "id": {
-            "type": "string",
-            "description": "User id",
-            "format": "ObjectId"
+          "adult": {
+            "type": "boolean",
+            "description": "Adult User or not"
+          },
+          "subscribed": {
+            "type": "boolean",
+            "description": "Subscribed User or not"
           }
         },
         "example": {
+          "id": "65d0c3d32216c1c48bd652f1",
+          "name": "Will Smith",
           "email": "user@example.com",
-          "id": "789898789..."
+          "adult": false,
+          "subscribed": true
         }
       },
       "UpdateUserRequest": {
@@ -1756,6 +1771,7 @@
       },
       "MyDrinkRequest": {
         "required": [
+          "drinkpicture",
           "drink",
           "shortDescription",
           "category",
@@ -1766,6 +1782,11 @@
         ],
         "type": "object",
         "properties": {
+          "drinkpicture": {
+            "type": "string",
+            "format": "binary",
+            "description": "Drink photo file"
+          },
           "drink": {
             "type": "string",
             "description": "Drink title",

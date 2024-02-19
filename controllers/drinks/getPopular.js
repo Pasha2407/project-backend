@@ -1,8 +1,7 @@
 const recipeModel = require("../../models/schemas/recipe");
-const userModel = require("../../models/schemas/user");
 
 async function getPopular(req, res) {
-  const { adult } = await userModel.findById(req.user.id);
+  const adult = req.user.adult;
   let filter = {};
   if (!adult) {
     filter = { alcoholic: "Non alcoholic" };

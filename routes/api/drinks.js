@@ -15,7 +15,7 @@ router.get("/search", wrapper(method.search));
 
 router.post(
   "/own/add",
-  upload.single("avatar"),
+  upload.single("drinkpicture"),
   validateSchema(addMyJoiSchema),
   wrapper(method.addMy)
 );

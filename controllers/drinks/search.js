@@ -1,11 +1,10 @@
 const recipeModel = require("../../models/schemas/recipe");
-const userModel = require("../../models/schemas/user");
 
 async function search(req, res) {
   const { drink, category, ingredients, page = 1, limit = 9 } = req.query;
   const skip = (page - 1) * limit;
 
-  const { adult } = await userModel.findById(req.user.id);
+  const adult = req.user.adult;
   const filter = {};
 
   if (!adult) {
