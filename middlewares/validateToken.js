@@ -5,25 +5,25 @@ const { newError } = require("../helpers");
 function validateToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (typeof authHeader === "undefined") {
-    return next(newError(401));
+    return next(newError(401, "Not authorized"));
   }
 
   const [bearer, token] = authHeader.split(" ", 2);
   if (bearer !== "Bearer") {
-    return next(newError(401));
+    return next(newError(401, "Not authorized"));
   }
 
   jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
     if (err) {
-      return next(newError(401));
+      return next(newError(401, "Not authorized"));
     }
 
     const user = await userModel.findById(decode.id);
     if (!user) {
-      return next(newError(401));
+      return next(newError(401, "Not authorized"));
     }
     if (user.token !== token) {
-      return next(newError(401));
+      return next(newError(401, "Not authorized"));
     }
 
     req.user = {

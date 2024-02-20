@@ -541,7 +541,7 @@
         "operationId": "DrinksController_postMyDrink",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n **drinkpicture** - file, зображення коктейлю. \n\n**drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів. Приклад передачі: [{\"ingredientId\": \"64aebb7f82d96cc69e0eb4a7\",\"title\": \"Dark rum\",\"measure\": \"1 1/2 oz\"}\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
+          "description": "# Опис параметрів запиту:\n\n **drinkpicture** - file, зображення коктейлю. \n\n**drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів. Приклад передачі: [{\"ingredientId\": \"64aebb7f82d96cc69e0eb4a7\",\"title\": \"Dark rum\",\"measure\": \"1 1/2 oz\"}]\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -1924,12 +1924,14 @@
             {
               "title": "Dark rum",
               "measure": "1 1/2 oz",
-              "ingredientId": "64aebb7f82d96cc69e0eb4a7"
+              "ingredientId": "64aebb7f82d96cc69e0eb4a7",
+              "_id": "65d3e54afb6a5db8b3e3f012"
             },
             {
               "title": "Kahlua",
               "measure": "1/2 oz",
-              "ingredientId": "64aebb7f82d96cc69e0eb4bd"
+              "ingredientId": "64aebb7f82d96cc69e0eb4bd",
+              "_id": "65d3e54afb6a5db8b3e3f013"
             }
           ],
           "favorite": [],
