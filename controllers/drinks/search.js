@@ -5,7 +5,7 @@ async function search(req, res) {
   const skip = (page - 1) * limit;
 
   const adult = req.user.adult;
-  const filter = {};
+  const filter = { owner: null };
 
   if (!adult) {
     filter.alcoholic = "Non alcoholic";

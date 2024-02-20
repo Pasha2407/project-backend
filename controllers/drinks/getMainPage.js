@@ -3,10 +3,10 @@ const recipeModel = require("../../models/schemas/recipe");
 async function getMainPage(req, res) {
   const adult = req.user.adult;
   const { limit = 3 } = req.query;
-  let filter = {};
+  const filter = { owner: null };
 
   if (!adult) {
-    filter = { alcoholic: "Non alcoholic" };
+    filter.alcoholic = "Non alcoholic";
   }
 
   const drinks = {
