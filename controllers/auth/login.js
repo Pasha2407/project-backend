@@ -27,6 +27,7 @@ async function login(req, res) {
 
   const updatedUser = await userModel.findByIdAndUpdate(user._id, {
     signinCount: user.signinCount,
+    notificationShow: true,
     token,
   });
 
@@ -36,21 +37,7 @@ async function login(req, res) {
     signinCount: user.signinCount,
   };
 
-  if (
-    user.signinCount === 3 ||
-    user.signinCount === 10 ||
-    user.signinCount === 100
-  ) {
-    res
-      .status(200)
-      .send({
-        user: userResponse,
-        token,
-        notification: `Wow! You have already visited us ${user.signinCount} times!`,
-      });
-  } else {
-    res.status(200).send({ user: userResponse, token });
-  }
+  res.status(200).send({ user: userResponse, token });
 }
 
 module.exports = login;

@@ -36,6 +36,9 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    notificationShow: {
+      type: Boolean,
+    },
   },
   { versionKey: false }
 );

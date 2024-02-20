@@ -33,7 +33,9 @@ function validateToken(req, res, next) {
       email: user.email,
       avatarURL: user.avatarURL,
       adult: user.adult,
-      subscribed: user.subscribed
+      subscribed: user.subscribed,
+      notificationShow: user.notificationShow,
+      signinCount: user.signinCount,
     };
 
     next();
