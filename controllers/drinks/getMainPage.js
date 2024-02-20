@@ -4,7 +4,7 @@ const userModel = require("../../models/schemas/user");
 async function getMainPage(req, res) {
   const { adult, signinCount, id, notificationShow } = req.user;
   const { limit = 3 } = req.query;
-  const filter = { owner: null };
+  const filter = {};
 
   if (!adult) {
     filter.alcoholic = "Non alcoholic";

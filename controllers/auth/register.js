@@ -11,7 +11,7 @@ async function register(req, res) {
 
   let user = await userModel.findOne({ email });
   if (user !== null) {
-    throw newError(409);
+    throw newError(409, "Email in use");
   }
   const passwordHash = await bcrypt.hash(password, 8);
 

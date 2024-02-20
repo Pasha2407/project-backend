@@ -44,7 +44,7 @@ async function updateUser(req, res) {
     const updatedUser = await userModel.findByIdAndUpdate(id, {
       name,
       avatarURL: uploadedAvatar.url,
-    });
+    }, { new: true });
 
     res.json({
       id: updatedUser.id,
@@ -52,7 +52,8 @@ async function updateUser(req, res) {
       avatarURL: updatedUser.avatarURL,
     });
   } else {
-    const updatedUser = await userModel.findByIdAndUpdate(id, { name });
+    const updatedUser = await userModel.findByIdAndUpdate(id, {
+       name }, { new: true });
 
     res.json({
       id: updatedUser.id,

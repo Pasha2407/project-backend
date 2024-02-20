@@ -5,7 +5,7 @@ async function getPopular(req, res) {
 
   const limit = 4;
 
-  const filter = { owner: null };
+  const filter = {};
   if (!adult) {
     filter.alcoholic = "Non alcoholic";
   }
