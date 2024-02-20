@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Drink Master API",
-    "description": "API to interact with drinks and user information and details. \n\n**Функціональні можливості:**\n\nРеєстрація та авторизація користувачів\n\nОновлення даних користувачів\n\nФільтрація даних про коктейлі\n\nОтримання та видалення коктейлів\n\nСтворення власного коктейлю\n\nДодавання коктейлів до обраних\n\n**Стек технологій, що використовується у проекті:**\n\nNode.js - середовище виконання JavaScript на сервері\n\nExpress.js - фреймворк для розробки веб-додатків на Node.js\n\nMongoDB - NoSQL база даних\n\nMongoose - бібліотека для роботи з MongoDB у Node.js",
+    "description": "API to interact with drinks and user information and details. \n\n**Функціональні можливості:**\n\nРеєстрація та авторизація користувачів\n\nОновлення даних користувачів\n\nФільтрація даних про напої\n\nОтримання та видалення напоїв\n\nСтворення власного напою\n\nДодавання напоїв до обраних\n\n**Стек технологій, що використовується у проекті:**\n\nNode.js - середовище виконання JavaScript на сервері\n\nExpress.js - фреймворк для розробки веб-додатків на Node.js\n\nMongoDB - NoSQL база даних\n\nMongoose - бібліотека для роботи з MongoDB у Node.js",
     "version": "2.0.0"
   },
   "servers": [
@@ -88,7 +88,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful user login\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**token** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.",
+            "description": "Successful user login\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**token** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.\n\n**notification** - текст для спливаючого повідомлення, з`являється при 3-ій, 10-ій та 100-ій аутентифікації",
             "content": {
               "application/json": {
                 "schema": {
@@ -143,7 +143,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Logged user returned\n\nJSON-об'єкт, який містить інформацію про поточного авторизованого користувача.\n\nОпис параметрів відповіді:\n\n**id** - ObjectId, унікальний ідентифікатор користувача\n\n**email** - string, електронна пошта користувача.\n",
+            "description": "Logged user returned\n\nJSON-об'єкт, який містить інформацію про поточного авторизованого користувача.\n\nОпис параметрів відповіді:\n\n**id** - ObjectId, унікальний ідентифікатор користувача\n\n**email** - string, електронна пошта користувача.\n\n**adult** - boolean, ознака повноліття користувача.\n\n**subscribed** - boolean, ознака підписки користувача на оновлення.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -269,12 +269,12 @@
       "get": {
         "tags": ["Filter"],
         "summary": "Drinks categories list",
-        "description": "Ендпоінт \"categories\" використовується для отримання списку категорій коктейлів, відсортованих за алфавітом\n",
+        "description": "Ендпоінт \"categories\" використовується для отримання списку категорій напоїв, відсортованих за алфавітом\n",
         "operationId": "FilterController_getCategories",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Categories list returned\n\nМасив, який містить список категорій коктейлів, відсортованих за алфавітом\n",
+            "description": "Categories list returned\n\nМасив, який містить список категорій напоїв, відсортованих за алфавітом\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -301,12 +301,12 @@
       "get": {
         "tags": ["Filter"],
         "summary": "Drinks ingredients list",
-        "description": "Ендпоінт \"ingredients\" використовується для отримання списку інгредієнтів коктейлів, відсортованих за алфавітом\n",
+        "description": "Ендпоінт \"ingredients\" використовується для отримання списку інгредієнтів напоїв, відсортованих за алфавітом\n",
         "operationId": "FilterController_getIngredients",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Ingredients list returned\n\nМасив, який містить список інгредієнтів коктейлів, відсортованих за алфавітом\n",
+            "description": "Ingredients list returned\n\nМасив, який містить список інгредієнтів напоїв, відсортованих за алфавітом\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -364,11 +364,11 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Drinks list for MainPage",
-        "description": "Ендпоінт \"mainpage\" використовується для отримання списку коктейлів з чотирьох зазначених категорій: Ordinary Drink, Cocktail, Shake та Other/Unknown. Коктейлі відсортовані по даті додавання в систему. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
+        "description": "Ендпоінт \"mainpage\" використовується для отримання списку напоїв з чотирьох зазначених категорій: Ordinary Drink, Cocktail, Shake та Other/Unknown. Напої відсортовані по даті додавання в систему. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні напої.\n",
         "operationId": "DrinksController_getMainpage",
         "responses": {
           "200": {
-            "description": "Drinks returned\n\nМасив, який містить список коктейлів з чотирьох категорій для виводу на головній сторінці\n",
+            "description": "Drinks returned\n\nМасив, який містить список напоїв з чотирьох категорій для виводу на головній сторінці\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -395,11 +395,11 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Drinks sorted by popularity",
-        "description": "Ендпоінт \"popular\" використовується для отримання списку коктейлів, відсортованих на основі кількості додавань до обраного користувачами. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n",
+        "description": "Ендпоінт \"popular\" використовується для отримання списку напоїв, відсортованих на основі кількості додавань до обраного користувачами. Виводиться чотири найпопулярніші напої. У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні напої.\n",
         "operationId": "DrinksController_getPopular",
         "responses": {
           "200": {
-            "description": "Drinks returned\n\nМасив, який містить список коктейлів, відсортованих на основі кількості додавань до обраного користувачами\n",
+            "description": "Drinks returned\n\nМасив, який містить список напоїв, відсортованих на основі кількості додавань до обраного користувачами\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -426,7 +426,7 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Drinks search",
-        "description": "Ендпоінт \"search\" використовується для пошуку коктейлів обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні коктейлі.\n\n# Опис параметрів запиту:\n\n**drink** - string, назва коктейлю для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
+        "description": "Ендпоінт \"search\" використовується для пошуку напоїв обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні напої.\n\n# Опис параметрів запиту:\n\n**drink** - string, назва напою для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
         "operationId": "DrinksController_getSearch",
         "parameters": [
           {
@@ -467,7 +467,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Drinks returned\n\nМасив, який містить список коктейлів, які відповідають критеріям пошуку\n",
+            "description": "Drinks returned\n\nМасив, який містить список напоїв, які відповідають критеріям пошуку\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -494,7 +494,7 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Drink Information",
-        "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про коктейль та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n",
+        "description": "Ендпоінт \"Info\" використовується для отримання повної інформації про напій та його інгредієнти. Якщо користувачеві не виповнилося 18 років, інформація буде недоступна\n",
         "operationId": "DrinksController_getDrinkInfo",
         "parameters": [
           {
@@ -510,7 +510,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Drink returned\n\nОб`єкт з повними даними про коктейль та дані про його інгредієнти\n",
+            "description": "Drink returned\n\nОб`єкт з повними даними про напій та дані про його інгредієнти\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -537,11 +537,11 @@
       "post": {
         "tags": ["Drinks"],
         "summary": "Adding my drink",
-        "description": "Ендпоінт \"own/add\" використовується для додавання власного коктейлю. Цей ендпоінт повертає об'єкт, який містить інформацію про коктейль, таку як загальна інформація та посилання на новий аватар, завантажений на сервер Cloudinary.\n",
+        "description": "Ендпоінт \"own/add\" використовується для додавання власного напою. Цей ендпоінт повертає об'єкт, який містить інформацію про напій, таку як загальна інформація та посилання на новий аватар, завантажений на сервер Cloudinary.\n",
         "operationId": "DrinksController_postMyDrink",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n **drinkpicture** - file, зображення коктейлю. \n\n**drink** - string, назва коктейля.\n\n**shortDescription** - string, короткий опис про коктейль.\n\n**category** - string, категорія коктейля.\n\n**glass** - string, стакан для коктейля.\n\n**alcoholic** - string, коктейль алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів. Приклад передачі: [{\"ingredientId\": \"64aebb7f82d96cc69e0eb4a7\",\"title\": \"Dark rum\",\"measure\": \"1 1/2 oz\"}]\n\n**instructions** - string, інструкція до коктейля.\n\n**avatar** - file, завантажене фото коктейлю.\n\n",
+          "description": "# Опис параметрів запиту:\n\n **drinkpicture** - file, зображення напою. \n\n**drink** - string, назва напою.\n\n**shortDescription** - string, короткий опис про напій.\n\n**category** - string, категорія напою.\n\n**glass** - string, стакан для напою.\n\n**alcoholic** - string, напій алкогольний чи не алкогольний.\n\n**ingredients** - array, масив інгредіентів. Приклад передачі: [{\"ingredientId\": \"64aebb7f82d96cc69e0eb4a7\",\"title\": \"Dark rum\",\"measure\": \"1 1/2 oz\"}\n\n**instructions** - string, інструкція до напою.\n",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -553,7 +553,7 @@
         },
         "responses": {
           "201": {
-            "description": "Drink returned\n\nОб`єкт з даними про коктейль\n",
+            "description": "Drink returned\n\nОб`єкт з даними про напій\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -580,7 +580,7 @@
       "delete": {
         "tags": ["Drinks"],
         "summary": "Removing my drink",
-        "description": "Ендпоінт \"own/remove\" використовується для видалення власного коктейлю по ід\n",
+        "description": "Ендпоінт \"own/remove\" використовується для видалення власного напою\n",
         "operationId": "DrinksController_deleteMyDrink",
         "parameters": [
           {
@@ -616,12 +616,12 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "My Drinks",
-        "description": "Ендпоінт \"own\" використовується для відображення списку власних коктейлів\n",
+        "description": "Ендпоінт \"own\" використовується для відображення списку власних напоїв\n",
         "operationId": "DrinksController_getMyDrinks",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Drinks returned\n\nОб`єкт з даними про власні коктейлі\n",
+            "description": "Drinks returned\n\nОб`єкт з даними про власні напої\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -645,11 +645,11 @@
       "post": {
         "tags": ["Drinks"],
         "summary": "Adding drink to Favorite",
-        "description": "Ендпоінт \"favorite/add\" використовується для додавання коктейлю в обране користувачеві\n",
+        "description": "Ендпоінт \"favorite/add\" використовується для додавання напою в обране користувачеві\n",
         "operationId": "DrinksController_postDrinkFavorite",
         "parameters": [],
         "requestBody": {
-          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
+          "description": "# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор напою.",
           "content": {
             "application/json": {
               "schema": {
@@ -661,7 +661,7 @@
         },
         "responses": {
           "200": {
-            "description": "Drink returned\n\nОб`єкт з даними про коктейль та користувача\n",
+            "description": "Drink returned\n\nОб`єкт з даними про напій та користувача.\n\nПри додаванні 3-го, 10-го та 100-го напою в обране додається текст **notification** для спливаючого повідомлення\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -688,7 +688,7 @@
       "delete": {
         "tags": ["Drinks"],
         "summary": "Removing drink from Favorite",
-        "description": "Ендпоінт \"favorite/remove\" використовується для видалення коктейлю з обраного у користувача\n# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор коктейлю.",
+        "description": "Ендпоінт \"favorite/remove\" використовується для видалення напою з обраного у користувача\n# Опис параметрів запиту:\n\n**drinkId** - string, ідентифікатор напою.",
         "operationId": "DrinksController_deleteDrinkFromFavorite",
         "parameters": [
           {
@@ -702,7 +702,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Drink returned\n\nОб`єкт з даними про коктейль та користувача\n",
+            "description": "Drink returned\n\nОб`єкт з даними про напій та користувача\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -729,12 +729,12 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Favorite drinks",
-        "description": "Ендпоінт \"favorite\" використовується для відображення списку коктейлів з обраного у користувача\n",
+        "description": "Ендпоінт \"favorite\" використовується для відображення списку напоїв з обраного у користувача\n",
         "operationId": "DrinksController_getFavoriteDrinks",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Drinks returned\n\nОб`єкт з даними про обрані коктейлі користувача\n",
+            "description": "Drinks returned\n\nОб`єкт з даними про обрані напої користувача\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -852,6 +852,11 @@
             "type": "string",
             "description": "User token",
             "format": "string"
+          },
+          "notification": {
+            "type": "string",
+            "description": "User notification",
+            "format": "string"
           }
         },
         "example": {
@@ -859,7 +864,8 @@
             "name": "Alex",
             "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
           },
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij...",
+          "notification": "Wow! You have already visited us 10 times!"
         }
       },
       "CurrentResponse": {
@@ -1964,11 +1970,16 @@
             "type": "string",
             "description": "Recipe ID",
             "format": "ObjectId"
+          },
+          "notification": {
+            "type": "string",
+            "description": "User notification"
           }
         },
         "example": {
           "userId": "65cf97bcb4481aee599a5df0",
-          "drinkId": "639b6de9ff77d221f190c569"
+          "drinkId": "639b6de9ff77d221f190c55f",
+          "notification": "Wow! You have added the 10 recipe to your favorites!"
         }
       },
       "DrinksFavoriteResponse": {
