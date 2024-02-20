@@ -2,7 +2,7 @@ const recipeModel = require("../../models/schemas/recipe");
 
 async function getPopular(req, res) {
   const adult = req.user.adult;
-  const filter = {};
+  const filter = { owner: null };
   if (!adult) {
     filter.alcoholic = "Non alcoholic";
   }
