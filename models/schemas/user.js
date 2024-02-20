@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema(
     subscribed: {
       type: Boolean,
     },
+    signinCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { versionKey: false }
 );

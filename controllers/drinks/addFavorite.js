@@ -16,10 +16,24 @@ async function addFavorite(req, res) {
     popularity: recipe.popularity,
   });
 
-  res.json({
-    userId: id,
-    drinkId: drinkId,
-  });
+  const favoriteCount = await recipeModel.find({ favorite: id });
+
+  if (
+    favoriteCount.length === 3 ||
+    favoriteCount.length === 10 ||
+    favoriteCount.length === 100
+  ) {
+    res.json({
+      userId: id,
+      drinkId: drinkId,
+      notification: `Wow! You have added the ${favoriteCount.length} recipes to your favorites!`,
+    });
+  } else {
+    res.json({
+      userId: id,
+      drinkId: drinkId,
+    });
+  }
 }
 
 module.exports = addFavorite;

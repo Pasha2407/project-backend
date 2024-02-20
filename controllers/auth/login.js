@@ -23,11 +23,34 @@ async function login(req, res) {
     { expiresIn: "24h" }
   );
 
-  await userModel.findByIdAndUpdate(user._id, { token });
+  user.signinCount = (user.signinCount || 0) + 1;
 
-  const userResponse = { name: user.name, avatarURL: user.avatarURL };
+  const updatedUser = await userModel.findByIdAndUpdate(user._id, {
+    signinCount: user.signinCount,
+    token,
+  });
 
-  res.status(200).send({ user: userResponse, token });
+  const userResponse = {
+    name: updatedUser.name,
+    avatarURL: updatedUser.avatarURL,
+    signinCount: user.signinCount,
+  };
+
+  if (
+    user.signinCount === 3 ||
+    user.signinCount === 10 ||
+    user.signinCount === 100
+  ) {
+    res
+      .status(200)
+      .send({
+        user: userResponse,
+        token,
+        notification: `Wow! You have already visited us ${user.signinCount} times!`,
+      });
+  } else {
+    res.status(200).send({ user: userResponse, token });
+  }
 }
 
 module.exports = login;
