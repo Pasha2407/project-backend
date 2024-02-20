@@ -6,8 +6,8 @@ async function removeMy(req, res) {
     const userId = req.user.id;
 
     const myRecipe = await recipeModel.findOne({ _id: id, owner: userId });
-    if (myRecipe === null) {
-        throw newError(404);
+    if (!myRecipe) {
+        throw newError(404, "Drink not found");
     }
 
     await recipeModel.findByIdAndDelete(id);
