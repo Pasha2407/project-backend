@@ -88,7 +88,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful user login\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**token** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.\n\n**notification** - текст для спливаючого повідомлення, з`являється при 3-ій, 10-ій та 100-ій аутентифікації",
+            "description": "Successful user login\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**token** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -368,7 +368,7 @@
         "operationId": "DrinksController_getMainpage",
         "responses": {
           "200": {
-            "description": "Drinks returned\n\nМасив, який містить список напоїв з чотирьох категорій для виводу на головній сторінці\n",
+            "description": "Drinks returned\n\nОб`єкт, який містить список напоїв з чотирьох категорій для виводу на головній сторінці\n\n\n**notification** - текст для спливаючого повідомлення, з`являється при 3-ій, 10-ій та 100-ій аутентифікації, виводиться тільки за наявності у відповіді\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -852,11 +852,6 @@
             "type": "string",
             "description": "User token",
             "format": "string"
-          },
-          "notification": {
-            "type": "string",
-            "description": "User notification",
-            "format": "string"
           }
         },
         "example": {
@@ -864,8 +859,7 @@
             "name": "Alex",
             "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
           },
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij...",
-          "notification": "Wow! You have already visited us 10 times!"
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
         }
       },
       "CurrentResponse": {
@@ -1021,253 +1015,262 @@
       "DrinksMainpageResponse": {
         "type": "object",
         "properties": {
-          "Ordinary Drink": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "drink": {
-                  "type": "string"
-                },
-                "drinkAlternate": {
-                  "type": "string"
-                },
-                "tags": {
-                  "type": "string"
-                },
-                "video": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "IBA": {
-                  "type": "string"
-                },
-                "alcoholic": {
-                  "type": "string"
-                },
-                "glass": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "instructions": {
-                  "type": "string"
-                },
-                "drinkThumb": {
-                  "type": "string"
-                },
-                "ingredients": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "title": {
-                        "type": "string"
-                      },
-                      "measure": {
-                        "type": "string"
-                      },
-                      "ingredientId": {
-                        "type": "string",
-                        "format": "ObjectId"
+          "drinks": {
+            "properties": {
+              "Ordinary Drink": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "drink": {
+                      "type": "string"
+                    },
+                    "drinkAlternate": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "string"
+                    },
+                    "video": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "IBA": {
+                      "type": "string"
+                    },
+                    "alcoholic": {
+                      "type": "string"
+                    },
+                    "glass": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "type": "string"
+                    },
+                    "drinkThumb": {
+                      "type": "string"
+                    },
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "measure": {
+                            "type": "string"
+                          },
+                          "ingredientId": {
+                            "type": "string",
+                            "format": "ObjectId"
+                          }
+                        }
                       }
+                    },
+                    "shortDescription": {
+                      "type": "string"
                     }
                   }
-                },
-                "shortDescription": {
-                  "type": "string"
+                }
+              },
+              "Cocktail": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "drink": {
+                      "type": "string"
+                    },
+                    "drinkAlternate": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "string"
+                    },
+                    "video": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "IBA": {
+                      "type": "string"
+                    },
+                    "alcoholic": {
+                      "type": "string"
+                    },
+                    "glass": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "type": "string"
+                    },
+                    "drinkThumb": {
+                      "type": "string"
+                    },
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "measure": {
+                            "type": "string"
+                          },
+                          "ingredientId": {
+                            "type": "string",
+                            "format": "ObjectId"
+                          }
+                        }
+                      }
+                    },
+                    "shortDescription": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "Shake": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "drink": {
+                      "type": "string"
+                    },
+                    "drinkAlternate": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "string"
+                    },
+                    "video": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "IBA": {
+                      "type": "string"
+                    },
+                    "alcoholic": {
+                      "type": "string"
+                    },
+                    "glass": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "type": "string"
+                    },
+                    "drinkThumb": {
+                      "type": "string"
+                    },
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "measure": {
+                            "type": "string"
+                          },
+                          "ingredientId": {
+                            "type": "string",
+                            "format": "ObjectId"
+                          }
+                        }
+                      }
+                    },
+                    "shortDescription": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "Other/Unknown": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "drink": {
+                      "type": "string"
+                    },
+                    "drinkAlternate": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "string"
+                    },
+                    "video": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "IBA": {
+                      "type": "string"
+                    },
+                    "alcoholic": {
+                      "type": "string"
+                    },
+                    "glass": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "type": "string"
+                    },
+                    "drinkThumb": {
+                      "type": "string"
+                    },
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "measure": {
+                            "type": "string"
+                          },
+                          "ingredientId": {
+                            "type": "string",
+                            "format": "ObjectId"
+                          }
+                        }
+                      }
+                    },
+                    "shortDescription": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
-            }
+            },
+            "type": "object"
           },
-          "Cocktail": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "drink": {
-                  "type": "string"
-                },
-                "drinkAlternate": {
-                  "type": "string"
-                },
-                "tags": {
-                  "type": "string"
-                },
-                "video": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "IBA": {
-                  "type": "string"
-                },
-                "alcoholic": {
-                  "type": "string"
-                },
-                "glass": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "instructions": {
-                  "type": "string"
-                },
-                "drinkThumb": {
-                  "type": "string"
-                },
-                "ingredients": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "title": {
-                        "type": "string"
-                      },
-                      "measure": {
-                        "type": "string"
-                      },
-                      "ingredientId": {
-                        "type": "string",
-                        "format": "ObjectId"
-                      }
-                    }
-                  }
-                },
-                "shortDescription": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "Shake": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "drink": {
-                  "type": "string"
-                },
-                "drinkAlternate": {
-                  "type": "string"
-                },
-                "tags": {
-                  "type": "string"
-                },
-                "video": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "IBA": {
-                  "type": "string"
-                },
-                "alcoholic": {
-                  "type": "string"
-                },
-                "glass": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "instructions": {
-                  "type": "string"
-                },
-                "drinkThumb": {
-                  "type": "string"
-                },
-                "ingredients": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "title": {
-                        "type": "string"
-                      },
-                      "measure": {
-                        "type": "string"
-                      },
-                      "ingredientId": {
-                        "type": "string",
-                        "format": "ObjectId"
-                      }
-                    }
-                  }
-                },
-                "shortDescription": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "Other/Unknown": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "drink": {
-                  "type": "string"
-                },
-                "drinkAlternate": {
-                  "type": "string"
-                },
-                "tags": {
-                  "type": "string"
-                },
-                "video": {
-                  "type": "string"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "IBA": {
-                  "type": "string"
-                },
-                "alcoholic": {
-                  "type": "string"
-                },
-                "glass": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "instructions": {
-                  "type": "string"
-                },
-                "drinkThumb": {
-                  "type": "string"
-                },
-                "ingredients": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "title": {
-                        "type": "string"
-                      },
-                      "measure": {
-                        "type": "string"
-                      },
-                      "ingredientId": {
-                        "type": "string",
-                        "format": "ObjectId"
-                      }
-                    }
-                  }
-                },
-                "shortDescription": {
-                  "type": "string"
-                }
-              }
-            }
+          "notification": {
+            "type": "string",
+            "description": "Notification for PopUp"
           }
         }
       },

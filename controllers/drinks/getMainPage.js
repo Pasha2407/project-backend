@@ -1,7 +1,8 @@
 const recipeModel = require("../../models/schemas/recipe");
+const userModel = require("../../models/schemas/user");
 
 async function getMainPage(req, res) {
-  const adult = req.user.adult;
+  const { adult, signinCount, id, notificationShow } = req.user;
   const { limit = 3 } = req.query;
   const filter = {};
 
@@ -30,7 +31,17 @@ async function getMainPage(req, res) {
     drinks[category] = result;
   }
 
-  res.json(drinks);
+  if (notificationShow) {
+    res.json({
+      drinks,
+      notification: `Wow! You have already visited us ${signinCount} times!`,
+    });
+    await userModel.findByIdAndUpdate(id, {
+      notificationShow: false,
+    });
+  } else {
+    res.json({ drinks });
+  }
 }
 
 module.exports = getMainPage;
