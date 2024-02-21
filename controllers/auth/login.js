@@ -24,10 +24,18 @@ async function login(req, res) {
   );
 
   user.signinCount = (user.signinCount || 0) + 1;
+  let notificationShow = false;
+  if (
+    user.signinCount === 3 ||
+    user.signinCount === 10 ||
+    user.signinCount === 100
+  ) {
+    notificationShow = true;
+  }
 
   const updatedUser = await userModel.findByIdAndUpdate(user._id, {
     signinCount: user.signinCount,
-    notificationShow: true,
+    notificationShow,
     token,
   });
 
