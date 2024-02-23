@@ -12,7 +12,7 @@ async function getPopular(req, res) {
   const filter = {};
   if (!adult) {
     filter.alcoholic = language === "en" ?
-      "Non alcoholic" : "Безалкогольний"
+      "Non alcoholic" : "Безалкогольний";
   }
 
   const result = await recipeModel

@@ -1,6 +1,11 @@
-const recipeModel = require("../../models/schemas/recipe");
+const { recipeEnModel, recipeUaModel }
+  = require("../../models/schemas/test-recipe");
 
 async function getFavorite(req, res) {
+  const language = req.user.language;
+  const recipeModel = language === "en" ?
+    recipeEnModel : recipeUaModel;
+
   const { page = 1, limit = 9 } = req.query;
   const skip = (page - 1) * limit;
 
