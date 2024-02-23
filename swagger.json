@@ -48,7 +48,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful user registration\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**token** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.",
+            "description": "Successful user registration\n\n**Опис параметрів відповіді:**\n\n**name** - string, ім'я користувача.\n\n**avatarURL** - string, посилання на автоматично згенерований аватар користувача.\n\n**accessToken** - string, токен використовується для зберігання стану авторизації користувача в системі, що дозволяє користувачам здійснювати захищені запити до API. Токен є довільним рядком символів і генерується при кожній новій авторизації користувача.\n\n**refreshToken** - string, токен для оновлення accessToken",
             "content": {
               "application/json": {
                 "schema": {
@@ -854,7 +854,8 @@
             "name": "Alex",
             "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
           },
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij...",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
         }
       },
       "LoginRequest": {

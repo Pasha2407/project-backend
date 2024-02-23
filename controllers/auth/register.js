@@ -41,12 +41,21 @@ async function register(req, res) {
     process.env.ACCESS_SECRET_KEY,
     { expiresIn: "2m" }
   );
+
+  const refreshToken = jwt.sign(
+    { id: user._id, email: user.email },
+    process.env.REFRESH_SECRET_KEY,
+    { expiresIn: "7d" }
+  );
+
   user.accessToken = accessToken;
+  user.refreshToken = refreshToken;
+
   await user.save();
 
   const userResponse = { name, avatarURL };
 
-  res.status(201).send({ user: userResponse, accessToken });
+  res.status(201).send({ user: userResponse, accessToken, refreshToken });
 }
 
 module.exports = register;
