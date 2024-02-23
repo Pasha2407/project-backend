@@ -21,7 +21,7 @@ async function register(req, res) {
     today.getFullYear() -
     birth.getFullYear() -
     (today.getMonth() < birth.getMonth() ||
-    (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())
+      (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())
       ? 1
       : 0);
 
@@ -34,6 +34,7 @@ async function register(req, res) {
     password: passwordHash,
     avatarURL,
     adult: isAdult,
+    language: "en",
   });
 
   const token = jwt.sign(

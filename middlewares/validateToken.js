@@ -36,6 +36,7 @@ function validateToken(req, res, next) {
       subscribed: user.subscribed,
       notificationShow: user.notificationShow,
       signinCount: user.signinCount,
+      language: user.language,
     };
 
     next();

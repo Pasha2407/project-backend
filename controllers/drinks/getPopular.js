@@ -1,13 +1,17 @@
-const recipeModel = require("../../models/schemas/recipe");
+const { recipeEnModel, recipeUaModel } = require("../../models/schemas/recipe");
 
 async function getPopular(req, res) {
-  const adult = req.user.adult;
+  const language = req.user.language;
+  const recipeModel = language === "en" ?
+    recipeEnModel : recipeUaModel;
 
+  const adult = req.user.adult;
   const limit = 4;
 
   const filter = {};
   if (!adult) {
-    filter.alcoholic = "Non alcoholic";
+    filter.alcoholic = language === "en" ?
+      "Non alcoholic" : "Безалкогольний"
   }
 
   const result = await recipeModel

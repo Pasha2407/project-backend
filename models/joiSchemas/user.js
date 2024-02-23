@@ -15,4 +15,14 @@ const emailSchema = Joi.object({
   }),
 });
 
-module.exports = { updateUserJoiSchema, emailSchema };
+const languageList = ["en", "ua"];
+
+const languageJoiSchema = Joi.object({
+  language: Joi.string().valid(...languageList).required().messages({
+    "any.required": "missing required language field",
+    "string.base": "field language must be a string",
+    "valid.base": "field language must be one of: " + languageList,
+  }),
+});
+
+module.exports = { updateUserJoiSchema, emailSchema, languageJoiSchema };
