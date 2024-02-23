@@ -1,27 +1,41 @@
-const recipeModel = require("../../models/schemas/recipe");
+const { recipeEnModel, recipeUaModel }
+  = require("../../models/schemas/test-recipe");
 const userModel = require("../../models/schemas/user");
 
 async function getMainPage(req, res) {
+  const language = req.user.language;
+  const recipeModel = language === "en" ?
+    recipeEnModel : recipeUaModel;
+
   const { adult, signinCount, id, notificationShow } = req.user;
   const { limit = 3 } = req.query;
   const filter = {};
 
   if (!adult) {
-    filter.alcoholic = "Non alcoholic";
+    filter.alcoholic = language === "en" ?
+      "Non alcoholic" : "Безалкогольний"
   }
 
-  const drinks = {
+  const drinksEn = {
     "Ordinary Drink": [],
-    Cocktail: [],
-    Shake: [],
-    "Other/Unknown": [],
+    "Cocktail": [],
+    "Shake": [],
+    "Other / Unknown": [],
   };
+
+  const drinksUa = {
+    "Звичайний напій": [],
+    "Коктейль": [],
+    "Шейк": [],
+    "Інше / Невідомо": [],
+  };
+
+  const drinks = language === "en" ? drinksEn : drinksUa;
 
   for (const category of Object.keys(drinks)) {
     const result = await recipeModel
       .find(
         { ...filter, category },
-        "-instructionsES -instructionsDE -instructionsFR -instructionsIT  -instructionsPL -instructionsRU -instructionsUK"
       )
       .sort({
         createdAt: -1,
@@ -31,10 +45,14 @@ async function getMainPage(req, res) {
     drinks[category] = result;
   }
 
+  const notification = language === "en" ?
+    `Wow! You have already visited us ${signinCount} times!` :
+    `Вау! Ви вже були у нас ${signinCount} разів!`
+
   if (notificationShow) {
     res.json({
       drinks,
-      notification: `Wow! You have already visited us ${signinCount} times!`,
+      notification,
     });
     await userModel.findByIdAndUpdate(id, {
       notificationShow: false,

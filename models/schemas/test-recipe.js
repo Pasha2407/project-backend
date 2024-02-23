@@ -70,7 +70,7 @@ const recipeSchema = new mongoose.Schema(
     }
 );
 
-const recipeEnModel = mongoose.model("recipes-en", recipeSchema);
-const recipeUaModel = mongoose.model("recipes-ua", recipeSchema);
+const recipeEnModel = mongoose.model("en-recipe", recipeSchema);
+const recipeUaModel = mongoose.model("ua-recipe", recipeSchema);
 
 module.exports = { recipeEnModel, recipeUaModel }

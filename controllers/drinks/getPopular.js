@@ -1,4 +1,5 @@
-const { recipeEnModel, recipeUaModel } = require("../../models/schemas/recipe");
+const { recipeEnModel, recipeUaModel }
+  = require("../../models/schemas/test-recipe");
 
 async function getPopular(req, res) {
   const language = req.user.language;
