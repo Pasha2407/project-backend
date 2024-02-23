@@ -17,10 +17,16 @@ async function login(req, res) {
     throw newError(401, "Email or password is wrong");
   }
 
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     { id: user._id, email: user.email },
-    process.env.JWT_SECRET,
-    { expiresIn: "24h" }
+    process.env.ACCESS_SECRET_KEY,
+    { expiresIn: "2m" }
+  );
+
+  const refreshToken = jwt.sign(
+    { id: user._id, email: user.email },
+    process.env.REFRESH_SECRET_KEY,
+    { expiresIn: "7d" }
   );
 
   user.signinCount = (user.signinCount || 0) + 1;
@@ -36,7 +42,8 @@ async function login(req, res) {
   const updatedUser = await userModel.findByIdAndUpdate(user._id, {
     signinCount: user.signinCount,
     notificationShow,
-    token,
+    accessToken,
+    refreshToken,
   });
 
   const userResponse = {
@@ -45,7 +52,7 @@ async function login(req, res) {
     signinCount: user.signinCount,
   };
 
-  res.status(200).send({ user: userResponse, token });
+  res.status(200).send({ user: userResponse, accessToken, refreshToken });
 }
 
 module.exports = login;

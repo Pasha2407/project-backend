@@ -21,16 +21,26 @@ const googleAuth = async (req, res) => {
 
   const payload = {
     id,
+    email,
     signinCount: user.signinCount,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "24h",
+  const accessToken = jwt.sign(payload, process.env.ACCESS_SECRET_KEY, {
+    expiresIn: "2m",
+  });
+  const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET_KEY, {
+    expiresIn: "7d",
   });
 
-  await userModel.findByIdAndUpdate(id, { token, notificationShow });
+  await userModel.findByIdAndUpdate(id, {
+    accessToken,
+    refreshToken,
+    notificationShow,
+  });
 
-  res.redirect(`${FRONTEND_URL}?token=${token}`);
+  res.redirect(
+    `${FRONTEND_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+  );
 };
 
 module.exports = googleAuth;

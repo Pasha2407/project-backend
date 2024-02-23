@@ -13,7 +13,7 @@ function validateToken(req, res, next) {
     return next(newError(401, "Not authorized"));
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
+  jwt.verify(token, process.env.ACCESS_SECRET_KEY, async (err, decode) => {
     if (err) {
       return next(newError(401, "Not authorized"));
     }
@@ -22,7 +22,7 @@ function validateToken(req, res, next) {
     if (!user) {
       return next(newError(401, "Not authorized"));
     }
-    if (user.token !== token) {
+    if (user.accessToken !== token) {
       return next(newError(401, "Not authorized"));
     }
 
