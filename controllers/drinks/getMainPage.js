@@ -28,10 +28,7 @@ async function getMainPage(req, res) {
       })
       .limit(limit);
 
-    const categoryName = category.charAt(0).toLowerCase() + category.slice(1).replace(/\s+|\//g, '');
     drinks[category] = result;
-    drinks[categoryName] = result;
-    delete drinks[category];
   }
 
   if (notificationShow) {

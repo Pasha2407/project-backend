@@ -1017,7 +1017,7 @@
         "properties": {
           "drinks": {
             "properties": {
-              "ordinaryDrink": {
+              "Ordinary Drink": {
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -1079,7 +1079,7 @@
                   }
                 }
               },
-              "cocktail": {
+              "Cocktail": {
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -1141,7 +1141,7 @@
                   }
                 }
               },
-              "shake": {
+              "Shake": {
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -1203,7 +1203,7 @@
                   }
                 }
               },
-              "otherUnknown": {
+              "Other/Unknown": {
                 "type": "array",
                 "items": {
                   "type": "object",
