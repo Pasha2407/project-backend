@@ -36,17 +36,17 @@ async function register(req, res) {
     adult: isAdult,
   });
 
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     { id: user._id, email: user.email },
-    process.env.JWT_SECRET,
-    { expiresIn: "24h" }
+    process.env.ACCESS_SECRET_KEY,
+    { expiresIn: "2m" }
   );
-  user.token = token;
+  user.accessToken = accessToken;
   await user.save();
 
   const userResponse = { name, avatarURL };
 
-  res.status(201).send({ user: userResponse, token });
+  res.status(201).send({ user: userResponse, accessToken });
 }
 
 module.exports = register;

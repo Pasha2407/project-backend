@@ -109,6 +109,49 @@
         }
       }
     },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh access token",
+        "operationId": "AuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "description": "# Опис параметрів запиту:\n\n**refreshToken** - string, refreshToken користувача.\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful refreshToken\n\n**Опис параметрів відповіді:**\n\n**accessToken** - string, accessToken користувача.\n\n**refreshToken** - string, refreshToken користувача.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "accessToken is old"
+          },
+          "403": {
+            "description": "Token invalid"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/auth/signout": {
       "post": {
         "tags": ["Auth"],
@@ -848,7 +891,12 @@
               }
             }
           },
-          "token": {
+          "accessToken": {
+            "type": "string",
+            "description": "User token",
+            "format": "string"
+          },
+          "refreshToken": {
             "type": "string",
             "description": "User token",
             "format": "string"
@@ -859,7 +907,38 @@
             "name": "Alex",
             "avatarURL": "//www.gravatar.com/avatar/189cd8c285cea2c9424fc329e5653dae?s=200&r=pg&d=mm"
           },
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij...",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ij..."
+        }
+      },
+      "RefreshRequest": {
+        "required": ["refreshToken"],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "refreshToken"
+          }
+        },
+        "example": {
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6..."
+        }
+      },
+      "RefreshResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "accessToken"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "refreshToken"
+          }
+        },
+        "example": {
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6...",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6..."
         }
       },
       "CurrentResponse": {

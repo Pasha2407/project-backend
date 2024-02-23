@@ -19,7 +19,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    token: {
+    accessToken: {
+      type: String,
+      default: null,
+    },
+    refreshToken: {
       type: String,
       default: null,
     },

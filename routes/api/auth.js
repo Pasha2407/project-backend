@@ -7,7 +7,10 @@ const {
   passport,
 } = require("../../middlewares");
 const { registerJoiSchema } = require("../../models/joiSchemas/auth");
-const { loginJoiSchema } = require("../../models/joiSchemas/auth");
+const {
+  loginJoiSchema,
+  refreshSchema,
+} = require("../../models/joiSchemas/auth");
 
 const { wrapper } = require("../../helpers");
 const method = require("../../controllers/auth");
@@ -20,6 +23,8 @@ router.post(
 );
 
 router.post("/signin", validateSchema(loginJoiSchema), wrapper(method.login));
+
+router.post("/refresh", validateSchema(refreshSchema), wrapper(method.refresh));
 
 router.post("/signout", validateToken, wrapper(method.logout));
 
