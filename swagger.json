@@ -426,7 +426,7 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Drinks search",
-        "description": "Ендпоінт \"search\" використовується для пошуку напоїв обраної категорії + інгредієнта + ключового слова. Присутня з пагінація з page та limit (за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні напої.\n\n# Опис параметрів запиту:\n\n**drink** - string, назва напою для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
+        "description": "Ендпоінт \"search\" використовується для пошуку напоїв обраної категорії + інгредієнта + ключового слова. Присутня пагінація з page, limit та totalHits (limit за замовчуванням 9 елементів). У разі, якщо користувачеві немає 18 років, відображаються тільки безалкогольні напої.\n\n# Опис параметрів запиту:\n\n**drink** - string, назва напою для пошуку.\n\n**category** - string, назва категорії для пошуку.\n\n**ingredients** - string, назва інгредієнта для пошуку.\n\n**page** - integer, номер сторінки для пошуку.\n\n**limit** - integer, кількість елементів на сторінці пошуку.",
         "operationId": "DrinksController_getSearch",
         "parameters": [
           {
@@ -616,7 +616,7 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "My Drinks",
-        "description": "Ендпоінт \"own\" використовується для відображення списку власних напоїв\n",
+        "description": "Ендпоінт \"own\" використовується для відображення списку власних напоїв. Присутня пагінація з page, limit та totalHits\n",
         "operationId": "DrinksController_getMyDrinks",
         "parameters": [],
         "responses": {
@@ -729,7 +729,7 @@
       "get": {
         "tags": ["Drinks"],
         "summary": "Favorite drinks",
-        "description": "Ендпоінт \"favorite\" використовується для відображення списку напоїв з обраного у користувача\n",
+        "description": "Ендпоінт \"favorite\" використовується для відображення списку напоїв з обраного у користувача. Присутня пагінація з page, limit та totalHits\n",
         "operationId": "DrinksController_getFavoriteDrinks",
         "parameters": [],
         "responses": {
@@ -1424,153 +1424,165 @@
         ]
       },
       "DrinksSearchResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "format": "ObjectId"
-            },
-            "drink": {
-              "type": "string"
-            },
-            "drinkAlternate": {
-              "type": "string"
-            },
-            "tags": {
-              "type": "string"
-            },
-            "video": {
-              "type": "string"
-            },
-            "category": {
-              "type": "string"
-            },
-            "IBA": {
-              "type": "string"
-            },
-            "alcoholic": {
-              "type": "string"
-            },
-            "glass": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "instructions": {
-              "type": "string"
-            },
-            "instructionsES": {
-              "type": "string"
-            },
-            "instructionsDE": {
-              "type": "string"
-            },
-            "instructionsFR": {
-              "type": "string"
-            },
-            "instructionsIT": {
-              "type": "string"
-            },
-            "instructionsRU": {
-              "type": "string"
-            },
-            "instructionsPL": {
-              "type": "string"
-            },
-            "instructionsUK": {
-              "type": "string"
-            },
-            "drinkThumb": {
-              "type": "string",
-              "format": "link"
-            },
-            "ingredients": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "measure": {
-                    "type": "string"
-                  },
-                  "ingredientId": {
-                    "type": "string",
-                    "format": "ObjectId"
+        "type": "object",
+        "properties": {
+          "totalHits": {
+            "type": "integer",
+            "description": "Total count of drinks"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "format": "ObjectId"
+                },
+                "drink": {
+                  "type": "string"
+                },
+                "drinkAlternate": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "string"
+                },
+                "video": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "IBA": {
+                  "type": "string"
+                },
+                "alcoholic": {
+                  "type": "string"
+                },
+                "glass": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "instructionsES": {
+                  "type": "string"
+                },
+                "instructionsDE": {
+                  "type": "string"
+                },
+                "instructionsFR": {
+                  "type": "string"
+                },
+                "instructionsIT": {
+                  "type": "string"
+                },
+                "instructionsRU": {
+                  "type": "string"
+                },
+                "instructionsPL": {
+                  "type": "string"
+                },
+                "instructionsUK": {
+                  "type": "string"
+                },
+                "drinkThumb": {
+                  "type": "string",
+                  "format": "link"
+                },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "measure": {
+                        "type": "string"
+                      },
+                      "ingredientId": {
+                        "type": "string",
+                        "format": "ObjectId"
+                      }
+                    }
                   }
+                },
+                "shortDescription": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "favorite": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "popularity": {
+                  "type": "integer"
                 }
               }
-            },
-            "shortDescription": {
-              "type": "string"
-            },
-            "updatedAt": {
-              "type": "string"
-            },
-            "favorite": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "popularity": {
-              "type": "integer"
             }
           }
         },
-        "example": [
-          {
-            "_id": "639b6de9ff77d221f190c508",
-            "drink": "Irish Coffee",
-            "drinkAlternate": "Sorry, not specified",
-            "tags": "IBA,ContemporaryClassic",
-            "video": "https://youtu.be/9xwtCHELxMA?si=j9qrBEoFTqqgPVCr",
-            "category": "Coffee / Tea",
-            "IBA": "Contemporary Classics",
-            "alcoholic": "Alcoholic",
-            "glass": "Irish coffee cup",
-            "description": "Irish Coffee is a classic hot cocktail that combines the richness of coffee with the smoothness of Irish whiskey. It is made by pouring hot coffee into a glass, adding a shot of Irish whiskey, and topping it off with a dollop of whipped cream. The warmth of the drink and the sweetness of the cream make it a comforting and indulgent treat.",
-            "instructions": "Heat the coffee, whiskey and sugar; do not boil. Pour into glass and top with cream; serve hot.",
-            "instructionsES": "Calienta el café, el whisky y el azúcar; no hierva. Vierta en un vaso y cubra con crema; servir caliente.",
-            "instructionsDE": "Kaffee, Whiskey und Zucker erhitzen; nicht kochen lassen. In ein Glas geben und mit Sahne übergießen; heiß servieren.",
-            "instructionsFR": "Faire chauffer le café, le whisky et le sucre ; ne pas faire bouillir. Verser dans un verre et garnir de crème; Servir chaud.",
-            "instructionsIT": "Riscaldare il caffè, il whisky e lo zucchero; non bollire. Versare nel bicchiere e ricoprire con la panna; servito caldo.",
-            "instructionsRU": "Нагрейте кофе, виски и сахар; не кипятить. Перелейте в стакан и украсьте сливками; подавать горячим.",
-            "instructionsPL": "Podgrzej kawę, whisky i cukier; nie gotuj. Wlać do szklanki i posypać śmietaną; podawać na gorąco.",
-            "instructionsUK": "Розігріти каву, віскі і цукор; не кип'ятити. Перелити в келих і зверху полити кремом; подавати гарячим.",
-            "drinkThumb": "https://ftp.goit.study/img/drinkify/recipes/Irish_Coffee.jpg",
-            "ingredients": [
-              {
-                "title": "Irish whiskey",
-                "measure": "1 1/2 oz ",
-                "ingredientId": "64aebb7f82d96cc69e0eb4c2"
-              },
-              {
-                "title": "Coffee",
-                "measure": "8 oz ",
-                "ingredientId": "64aebb7f82d96cc69e0eb4e7"
-              },
-              {
-                "title": "Sugar",
-                "measure": "1 tsp ",
-                "ingredientId": "64aebb7f82d96cc69e0eb4bc"
-              },
-              {
-                "title": "Whipped cream",
-                "measure": "1 tblsp ",
-                "ingredientId": "64f1d5c069d8333cf130fb38"
-              }
-            ],
-            "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
-            "updatedAt": "2024-02-16T19:28:22.859Z",
-            "favorite": ["65cf97bcb4481aee599a5df0"],
-            "popularity": 1
-          }
-        ]
+        "example": {
+          "totalHits": 12,
+          "data": [
+            {
+              "_id": "639b6de9ff77d221f190c508",
+              "drink": "Irish Coffee",
+              "drinkAlternate": "Sorry, not specified",
+              "tags": "IBA,ContemporaryClassic",
+              "video": "https://youtu.be/9xwtCHELxMA?si=j9qrBEoFTqqgPVCr",
+              "category": "Coffee / Tea",
+              "IBA": "Contemporary Classics",
+              "alcoholic": "Alcoholic",
+              "glass": "Irish coffee cup",
+              "description": "Irish Coffee is a classic hot cocktail that combines the richness of coffee with the smoothness of Irish whiskey. It is made by pouring hot coffee into a glass, adding a shot of Irish whiskey, and topping it off with a dollop of whipped cream. The warmth of the drink and the sweetness of the cream make it a comforting and indulgent treat.",
+              "instructions": "Heat the coffee, whiskey and sugar; do not boil. Pour into glass and top with cream; serve hot.",
+              "instructionsES": "Calienta el café, el whisky y el azúcar; no hierva. Vierta en un vaso y cubra con crema; servir caliente.",
+              "instructionsDE": "Kaffee, Whiskey und Zucker erhitzen; nicht kochen lassen. In ein Glas geben und mit Sahne übergießen; heiß servieren.",
+              "instructionsFR": "Faire chauffer le café, le whisky et le sucre ; ne pas faire bouillir. Verser dans un verre et garnir de crème; Servir chaud.",
+              "instructionsIT": "Riscaldare il caffè, il whisky e lo zucchero; non bollire. Versare nel bicchiere e ricoprire con la panna; servito caldo.",
+              "instructionsRU": "Нагрейте кофе, виски и сахар; не кипятить. Перелейте в стакан и украсьте сливками; подавать горячим.",
+              "instructionsPL": "Podgrzej kawę, whisky i cukier; nie gotuj. Wlać do szklanki i posypać śmietaną; podawać na gorąco.",
+              "instructionsUK": "Розігріти каву, віскі і цукор; не кип'ятити. Перелити в келих і зверху полити кремом; подавати гарячим.",
+              "drinkThumb": "https://ftp.goit.study/img/drinkify/recipes/Irish_Coffee.jpg",
+              "ingredients": [
+                {
+                  "title": "Irish whiskey",
+                  "measure": "1 1/2 oz ",
+                  "ingredientId": "64aebb7f82d96cc69e0eb4c2"
+                },
+                {
+                  "title": "Coffee",
+                  "measure": "8 oz ",
+                  "ingredientId": "64aebb7f82d96cc69e0eb4e7"
+                },
+                {
+                  "title": "Sugar",
+                  "measure": "1 tsp ",
+                  "ingredientId": "64aebb7f82d96cc69e0eb4bc"
+                },
+                {
+                  "title": "Whipped cream",
+                  "measure": "1 tblsp ",
+                  "ingredientId": "64f1d5c069d8333cf130fb38"
+                }
+              ],
+              "shortDescription": "A classic hot cocktail with coffee, Irish whiskey, and whipped cream.",
+              "updatedAt": "2024-02-16T19:28:22.859Z",
+              "favorite": ["65cf97bcb4481aee599a5df0"],
+              "popularity": 1
+            }
+          ]
+        }
       },
       "DrinkInfoResponse": {
         "type": "object",
@@ -1868,85 +1880,102 @@
       "MyDrinkResponse": {
         "type": "object",
         "properties": {
-          "drink": {
-            "type": "string",
-            "description": "Drink title",
-            "example": "Gin Lemon"
+          "totalHits": {
+            "type": "integer",
+            "description": "Total count of drinks"
           },
-          "shortDescription": {
-            "type": "string",
-            "description": "Short description about the drink",
-            "example": "A gin and tonic is a highball cocktail..."
-          },
-          "category": {
-            "type": "string",
-            "description": "Drink category",
-            "example": "Cocktail"
-          },
-          "alcoholic": {
-            "type": "string",
-            "description": "Alcoholic or Non Alcoholic drink",
-            "example": "Alcoholic"
-          },
-          "ingredients": {
+          "data": {
             "type": "array",
-            "description": "Drink ingredients",
             "items": {
               "type": "object",
               "properties": {
-                "title": {
+                "drink": {
                   "type": "string",
-                  "description": "Ingredient title"
+                  "description": "Drink title",
+                  "example": "Gin Lemon"
                 },
-                "measure": {
+                "shortDescription": {
                   "type": "string",
-                  "description": "Measurement of the ingredient"
+                  "description": "Short description about the drink",
+                  "example": "A gin and tonic is a highball cocktail..."
                 },
-                "ingredientId": {
-                  "type": "object",
-                  "properties": {
-                    "$oid": {
-                      "type": "string",
-                      "description": "MongoDB ObjectId"
+                "category": {
+                  "type": "string",
+                  "description": "Drink category",
+                  "example": "Cocktail"
+                },
+                "alcoholic": {
+                  "type": "string",
+                  "description": "Alcoholic or Non Alcoholic drink",
+                  "example": "Alcoholic"
+                },
+                "ingredients": {
+                  "type": "array",
+                  "description": "Drink ingredients",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "description": "Ingredient title"
+                      },
+                      "measure": {
+                        "type": "string",
+                        "description": "Measurement of the ingredient"
+                      },
+                      "ingredientId": {
+                        "type": "object",
+                        "properties": {
+                          "$oid": {
+                            "type": "string",
+                            "description": "MongoDB ObjectId"
+                          }
+                        }
+                      }
                     }
                   }
+                },
+                "instructions": {
+                  "type": "string",
+                  "description": "Drink instructions",
+                  "example": "Pour schnapps, orange juice, and..."
                 }
               }
             }
-          },
-          "instructions": {
-            "type": "string",
-            "description": "Drink instructions",
-            "example": "Pour schnapps, orange juice, and..."
           }
         },
         "example": {
-          "_id": "65d3d698a69b484fb9794927",
-          "drink": "New Drink Name",
-          "drinkAlternate": "Sorry, not specified",
-          "category": "Cocktail",
-          "alcoholic": "Alcoholic",
-          "glass": "Beer Mug",
-          "instructions": "Drink instructions",
-          "drinkThumb": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708381849/Gal_Gadot_cq7gi8.jpg",
-          "ingredients": [
+          "totalHits": 12,
+          "data": [
             {
-              "title": "Dark rum",
-              "measure": "1 1/2 oz",
-              "ingredientId": "64aebb7f82d96cc69e0eb4a7",
-              "_id": "65d3e54afb6a5db8b3e3f012"
-            },
-            {
-              "title": "Kahlua",
-              "measure": "1/2 oz",
-              "ingredientId": "64aebb7f82d96cc69e0eb4bd",
-              "_id": "65d3e54afb6a5db8b3e3f013"
+              "_id": "65d3d698a69b484fb9794927",
+              "drink": "New Drink Name",
+              "drinkAlternate": "Sorry, not specified",
+              "category": "Cocktail",
+              "alcoholic": "Alcoholic",
+              "glass": "Beer Mug",
+              "instructions": "Drink instructions",
+              "drinkThumb": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708381849/Gal_Gadot_cq7gi8.jpg",
+              "ingredients": [
+                {
+                  "title": "Dark rum",
+                  "measure": "1 1/2 oz",
+                  "ingredientId": "64aebb7f82d96cc69e0eb4a7",
+                  "_id": "65d3e54afb6a5db8b3e3f012"
+                },
+                {
+                  "title": "Kahlua",
+                  "measure": "1/2 oz",
+                  "ingredientId": "64aebb7f82d96cc69e0eb4bd",
+                  "_id": "65d3e54afb6a5db8b3e3f013"
+                }
+              ],
+              "favorite": [],
+              "popularity": 0,
+              "shortDescription": "Short Description",
+              "owner": "65d111dcbe675a8bc4789e18"
             }
-          ],
-          "favorite": [],
-          "popularity": 0,
-          "shortDescription": "Short Description",
-          "owner": "65d111dcbe675a8bc4789e18"
+          ]
         }
       },
       "DrinkToFavoriteRequest": {
@@ -1992,6 +2021,10 @@
             "type": "string",
             "description": "User ID",
             "format": "ObjectId"
+          },
+          "totalHits": {
+            "type": "integer",
+            "description": "Total count of drinks"
           },
           "data": {
             "type": "array",
@@ -2096,6 +2129,7 @@
         },
         "example": {
           "userId": "65d0ef3a2dcbb61cef81ce15",
+          "totalHits": 12,
           "data": [
             {
               "_id": "639b6de9ff77d221f190c51c",
