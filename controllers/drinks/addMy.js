@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const { recipeEnModel, recipeUaModel }
   = require("../../models/schemas/test-recipe");
 
+const { ingredientEnModel, ingredientUaModel }
+  = require("../../models/schemas/test-ingredient");
+
 const { categoriesList, glassesList, alcoholicList,
   categoriesUaList, glassesUaList, alcoholicUaList }
   = require("../../helpers/drinkLists")
@@ -41,6 +44,33 @@ async function addMy(req, res) {
   else uaAlc = "Безалкогольний";
 
   const parsedIngredients = JSON.parse(ingredients);
+  const ingredientMeasures = parsedIngredients.map(item => item.measure);
+  const ingredientIds = parsedIngredients.map(item => item.ingredientId);
+
+  const enIngredients = [];
+  const uaIngredients = [];
+
+  for (let i = 0; i < ingredientIds.length; i++) {
+    const ingredientId = ingredientIds[i];
+    const measure = ingredientMeasures[i];
+
+    const resultEnIngredient = await ingredientEnModel.findById(ingredientId);
+    const resultUaIngredient = await ingredientUaModel.findById(ingredientId);
+
+    const enIngredient = {
+      ingredientId: resultEnIngredient._id,
+      title: resultEnIngredient.title,
+      measure: measure
+    };
+    const uaIngredient = {
+      ingredientId: resultUaIngredient._id,
+      title: resultUaIngredient.title,
+      measure: measure
+    };
+
+    enIngredients.push(enIngredient);
+    uaIngredients.push(uaIngredient);
+  }
 
   const newRecipe = {
     drink,
@@ -49,7 +79,7 @@ async function addMy(req, res) {
     category: categoriesList[categoryIndex],
     glass: glassesList[glassIndex],
     alcoholic: enAlc,
-    ingredients: parsedIngredients,
+    ingredients: enIngredients,
     instructions,
     owner: id,
   };
@@ -63,7 +93,7 @@ async function addMy(req, res) {
     category: categoriesUaList[categoryIndex],
     glass: glassesUaList[glassIndex],
     alcoholic: uaAlc,
-    ingredients: parsedIngredients,
+    ingredients: uaIngredients,
     instructions,
     owner: id,
   };
