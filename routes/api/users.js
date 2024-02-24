@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { validateSchema, upload } = require("../../middlewares");
-const { updateUserJoiSchema, emailSchema }
+const { updateUserJoiSchema, emailSchema, languageJoiSchema }
   = require("../../models/joiSchemas/user");
 
 const { wrapper } = require("../../helpers");
@@ -21,6 +21,12 @@ router.post(
   "/subscribe",
   validateSchema(emailSchema),
   wrapper(method.sendSubscribe)
+);
+
+router.patch(
+  "/language",
+  validateSchema(languageJoiSchema),
+  wrapper(method.language)
 );
 
 module.exports = router;

@@ -1,6 +1,11 @@
-const ingredientModel = require("../../models/schemas/ingredient");
+const { ingredientEnModel, ingredientUaModel }
+  = require("../../models/schemas/test-ingredient");
 
 async function getIngredients(req, res) {
+  const language = req.user.language;
+  const ingredientModel = language === "en" ?
+    ingredientEnModel : ingredientUaModel;
+
   const result = await ingredientModel.aggregate([
     {
       $group: {

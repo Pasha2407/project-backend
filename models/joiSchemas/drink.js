@@ -1,6 +1,7 @@
 const Joi = require("joi");
 
-const { categoriesList, glassesList, alcoholicList }
+const { categoriesList, glassesList, alcoholicList,
+  categoriesUaList, glassesUaList, alcoholicUaList }
   = require("../../helpers/drinkLists")
 
 const addMyJoiSchema = Joi.object({
@@ -13,28 +14,30 @@ const addMyJoiSchema = Joi.object({
     "string.base": "field shortDescription must be a string",
   }),
   category: Joi.string()
-    .valid(...categoriesList)
+    .valid(...categoriesList, ...categoriesUaList)
     .required()
     .messages({
       "any.required": "missing required category field",
       "string.base": "field category must be a string",
-      "valid.base": "field category must be one of: " + categoriesList,
+      "valid.base": "field category must be one of: " +
+        categoriesList + " or " + categoriesUaList,
     }),
   glass: Joi.string()
-    .valid(...glassesList)
+    .valid(...glassesList, ...glassesUaList)
     .required()
     .messages({
       "any.required": "missing required glass field",
       "string.base": "field glass must be a string",
-      "valid.base": "field glass must be one of: " + glassesList,
+      "valid.base": "field glass must be one of: " +
+        glassesList + " or " + glassesUaList,
     }),
   alcoholic: Joi.string()
-    .valid(...alcoholicList)
+    .valid(...alcoholicList, ...alcoholicUaList)
     .required()
     .messages({
       "any.required": "missing required alcoholic field",
       "string.base": "field alcoholic must be a string",
-      "valid.base": "field alcoholic must be Alcoholic or Non alcoholic",
+      "valid.base": "field alcoholic must be Alcoholic (Алкогольний) or Non alcoholic (Безалкогольний)",
     }),
   ingredients: Joi.string().required().messages({
     "any.required": "missing required ingredients field",
