@@ -26,7 +26,10 @@ async function search(req, res) {
 
   const result = await recipeModel.find(filter);
 
-  res.json(result.splice(skip, limit));
+  res.json({
+    totalHits: result.length,
+    data: result.splice(skip, limit),
+  });
 }
 
 module.exports = search;

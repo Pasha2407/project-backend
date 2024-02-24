@@ -6,8 +6,10 @@ async function getFavorite(req, res) {
 
   const id = req.user.id;
   const result = await recipeModel.find({ favorite: id });
+
   res.json({
     userId: id,
+    totalHits: result.length,
     data: result.splice(skip, limit),
   });
 }
