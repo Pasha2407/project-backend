@@ -1,9 +1,17 @@
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs/promises");
+const mongoose = require('mongoose');
 
-const recipeModel = require("../../models/schemas/recipe");
+const { recipeEnModel, recipeUaModel }
+  = require("../../models/schemas/test-recipe");
+
+const { categoriesList, glassesList, alcoholicList,
+  categoriesUaList, glassesUaList, alcoholicUaList }
+  = require("../../helpers/drinkLists")
 
 async function addMy(req, res) {
+  const language = req.user.language;
+
   const {
     drink,
     shortDescription,
@@ -14,12 +22,23 @@ async function addMy(req, res) {
     instructions,
   } = req.body;
 
+  const categoryIndex = language === "en" ?
+    categoriesList.indexOf(category) : categoriesUaList.indexOf(category);
+  const glassIndex = language === "en" ?
+    glassesList.indexOf(glass) : glassesUaList.indexOf(glass);
+  const alcoholicIndex = language === "en" ?
+    alcoholicList.indexOf(alcoholic) : alcoholicUaList.indexOf(alcoholic);
+
   const id = req.user.id;
   const adult = req.user.adult;
+  const newId = new mongoose.Types.ObjectId();
 
-  let alc = "";
-  if (adult) alc = alcoholic;
-  else alc = "Non alcoholic";
+  let enAlc = "";
+  if (adult) enAlc = alcoholicList[alcoholicIndex];
+  else enAlc = "Non alcoholic";
+  let uaAlc = "";
+  if (adult) uaAlc = alcoholicUaList[alcoholicIndex];
+  else uaAlc = "Безалкогольний";
 
   const parsedIngredients = JSON.parse(ingredients);
 
@@ -27,15 +46,29 @@ async function addMy(req, res) {
     drink,
     drinkThumb: "",
     shortDescription,
-    category,
-    glass,
-    alcoholic: alc,
+    category: categoriesList[categoryIndex],
+    glass: glassesList[glassIndex],
+    alcoholic: enAlc,
     ingredients: parsedIngredients,
     instructions,
     owner: id,
   };
-  const resultRepice = await recipeModel.create(newRecipe);
-  await resultRepice.save();
+  const resultEnRecipe = await recipeEnModel.create({ _id: newId, ...newRecipe });
+  await resultEnRecipe.save();
+
+  const newUaRecipe = {
+    drink,
+    drinkThumb: "",
+    shortDescription,
+    category: categoriesUaList[categoryIndex],
+    glass: glassesUaList[glassIndex],
+    alcoholic: uaAlc,
+    ingredients: parsedIngredients,
+    instructions,
+    owner: id,
+  };
+  const resultUaRecipe = await recipeUaModel.create({ _id: newId, ...newUaRecipe });
+  await resultUaRecipe.save();
 
   if (req.file) {
     const { path } = req.file;
@@ -69,14 +102,23 @@ async function addMy(req, res) {
     await fs.unlink(path);
 
     if (uploadedAvatar) {
-      const updateResult = await recipeModel.findByIdAndUpdate(
-        resultRepice._id,
+      const updateEnResult = await recipeEnModel.findByIdAndUpdate(
+        resultEnRecipe._id,
+        { drinkThumb: uploadedAvatar.url },
+        { new: true }
+      );
+      const updateUaResult = await recipeUaModel.findByIdAndUpdate(
+        resultUaRecipe._id,
         { drinkThumb: uploadedAvatar.url },
         { new: true }
       );
 
+      const updateResult = language === "en" ? updateEnResult : updateUaResult;
       res.status(201).json(updateResult);
     }
-  } else res.status(201).json(resultRepice);
+  } else {
+    const resultRecipe = language === "en" ? resultEnRecipe : resultUaRecipe;
+    res.status(201).json(resultRecipe);
+  }
 }
 module.exports = addMy;
