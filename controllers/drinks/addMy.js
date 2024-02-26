@@ -71,7 +71,7 @@ async function addMy(req, res) {
     if (uploadedAvatar) {
       const updateResult = await recipeModel.findByIdAndUpdate(
         resultRepice._id,
-        { drinkThumb: uploadedAvatar.url },
+        { drinkThumb: uploadedAvatar.secure_url },
         { new: true }
       );
 
