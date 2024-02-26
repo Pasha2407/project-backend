@@ -932,7 +932,7 @@
         "example": {
           "id": "65cf97bcb4481aee599a5df0",
           "name": "Gal Gadot",
-          "avatarURL": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708164056/Gal_Gadot_wtdgy4.jpg"
+          "avatarURL": "https://res.cloudinary.com/dmsa2em2m/image/upload/v1708948617/ch_xuhg4r.png"
         }
       },
       "SubscribeUserRequest": {
@@ -1955,7 +1955,7 @@
               "alcoholic": "Alcoholic",
               "glass": "Beer Mug",
               "instructions": "Drink instructions",
-              "drinkThumb": "http://res.cloudinary.com/dmsa2em2m/image/upload/v1708381849/Gal_Gadot_cq7gi8.jpg",
+              "drinkThumb": "https://res.cloudinary.com/dmsa2em2m/image/upload/v1708948617/ch_xuhg4r.png",
               "ingredients": [
                 {
                   "title": "Dark rum",
