@@ -1,5 +1,6 @@
 async function current(req, res) {
-  const { email, id, name, adult, subscribed, avatarURL } = req.user;
+  const { email, id, name, adult, subscribed, avatarURL, dateOfBirth } =
+    req.user;
   res.json({
     id: id,
     name: name,
@@ -7,6 +8,7 @@ async function current(req, res) {
     adult: adult,
     subscribed: subscribed,
     avatarURL: avatarURL,
+    dateOfBirth: dateOfBirth,
   });
 }
 
