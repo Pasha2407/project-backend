@@ -43,7 +43,7 @@ async function updateUser(req, res) {
 
     const updatedUser = await userModel.findByIdAndUpdate(id, {
       name,
-      avatarURL: uploadedAvatar.url,
+      avatarURL: uploadedAvatar.secure_url,
     }, { new: true });
 
     res.json({
@@ -53,7 +53,8 @@ async function updateUser(req, res) {
     });
   } else {
     const updatedUser = await userModel.findByIdAndUpdate(id, {
-       name }, { new: true });
+      name
+    }, { new: true });
 
     res.json({
       id: updatedUser.id,
